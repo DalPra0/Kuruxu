@@ -12,6 +12,8 @@ import SceneKit
 class ARTestViewController: UIViewController, ARSCNViewDelegate {
     
     private let sceneView = ARSCNView()
+    private var detectedMarkersCount = 0
+    private var counterLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +46,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     private func startARSession() {
         guard let markerImage = UIImage(named: "marker"),
               let cgImage = markerImage.cgImage else {
-            print("❌ Erro: Marker não encontrado nos Assets!")
+            print("Erro: Marker não encontrado nos Assets!")
             showAlert(message: "Marker não encontrado. Adicione 'marker' nos Assets.")
             return
         }
@@ -54,12 +56,12 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         
         let configuration = ARImageTrackingConfiguration()
         configuration.trackingImages = [referenceImage]
-        configuration.maximumNumberOfTrackedImages = 1
+        configuration.maximumNumberOfTrackedImages = 4  // quantidade maxima de markers
         
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         
-        print("✅ Sessão AR iniciada!")
-        print("📸 Aponte a câmera para o marker impresso")
+        print("Sessão AR iniciada!")
+        print("Aponte a câmera para o marker impresso")
     }
     
     private func addCloseButton() {
@@ -73,6 +75,18 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         closeButton.autoresizingMask = [.flexibleLeftMargin, .flexibleBottomMargin]
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         view.addSubview(closeButton)
+        
+        counterLabel = UILabel()
+        counterLabel.text = "🎯 Markers: 0"
+        counterLabel.textColor = .white
+        counterLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        counterLabel.textAlignment = .center
+        counterLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        counterLabel.layer.cornerRadius = 15
+        counterLabel.clipsToBounds = true
+        counterLabel.frame = CGRect(x: 20, y: 50, width: 180, height: 50)
+        counterLabel.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin]
+        view.addSubview(counterLabel)
     }
     
     @objc private func closeTapped() {
@@ -83,10 +97,25 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard let imageAnchor = anchor as? ARImageAnchor else { return }
         
-        print("🎯 Marker detectado: \(imageAnchor.referenceImage.name ?? "desconhecido")")
+        detectedMarkersCount += 1
+        
+        print("Marker #\(detectedMarkersCount) detectado: \(imageAnchor.referenceImage.name ?? "desconhecido")")
         
         DispatchQueue.main.async {
+            self.updateCounter()
             self.add3DModel(to: node)
+        }
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
+        guard anchor is ARImageAnchor else { return }
+        
+        detectedMarkersCount = max(0, detectedMarkersCount - 1)
+        
+        print("Marker removido. Total: \(detectedMarkersCount)")
+        
+        DispatchQueue.main.async {
+            self.updateCounter()
         }
     }
     
@@ -124,6 +153,20 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         print("D20 adicionado ao marker!")
         
         showSuccessMessage()
+    }
+    
+    private func updateCounter() {
+        counterLabel.text = "🎯 Markers: \(detectedMarkersCount)"
+        
+        if detectedMarkersCount > 0 {
+            UIView.animate(withDuration: 0.2) {
+                self.counterLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.8)
+            } completion: { _ in
+                UIView.animate(withDuration: 0.2) {
+                    self.counterLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+                }
+            }
+        }
     }
     
     private func showSuccessMessage() {
