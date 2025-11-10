@@ -61,7 +61,6 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         
         print("Sessão AR iniciada!")
-        print("Aponte a câmera para o marker impresso")
     }
     
     private func addCloseButton() {
