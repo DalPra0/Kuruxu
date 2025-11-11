@@ -13,6 +13,6 @@ struct SelectionView: View {
     }
 }
 
-#Preview {
+#Preview(traits: .landscapeRight) {
     SelectionView()
 }

@@ -13,6 +13,6 @@ struct EndingView: View {
     }
 }
 
-#Preview {
+#Preview(traits: .landscapeRight) {
     EndingView()
 }

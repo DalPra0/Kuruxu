@@ -13,6 +13,6 @@ struct HomeView: View {
     }
 }
 
-#Preview {
+#Preview(traits: .landscapeRight) {
     HomeView()
 }

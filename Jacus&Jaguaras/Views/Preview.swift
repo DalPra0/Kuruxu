@@ -13,6 +13,6 @@ struct Preview: View {
     }
 }
 
-#Preview {
+#Preview(traits: .landscapeRight) {
     Preview()
 }
