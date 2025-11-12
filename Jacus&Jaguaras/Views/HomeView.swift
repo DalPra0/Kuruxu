@@ -8,34 +8,48 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State var currentIndex = 0
+    @State var activeCard: CardModel?
+    let dataModel = DataModel()
     var body: some View {
         
-        VStack(spacing: 40){
-            
-            RoundedRectangle(cornerRadius: 24)
-                .fill(Color(uiColor: .systemGray4))
-                .frame(width: 229, height: 88)
-                .overlay{
-                    Text("Logo")
-                        .font(.system(size: 40))
-                        .foregroundStyle(.black)
-                }
-            
-            Button(){
-                
-            }label: {
-                
-                RoundedRectangle(cornerRadius: 24)
-                    .fill(Color(uiColor: .systemGray4))
-                    .frame(width: 161, height: 69)
-                    .overlay{
-                        Text("Começar")
-                            .font(.system(size: 24))
-                            .foregroundStyle(.black)
+        HStack{
+            // MARK: VOLTAR
+            if currentIndex >= 1{
+                Button{
+                    if currentIndex > 0 {
+                        currentIndex -= 2
                     }
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+            } else {
+                Image(systemName: "chevron.left")
+                    .foregroundStyle(.gray)
             }
+            
+            HStack{
+                AccordionView(card: dataModel.cardsList[currentIndex])
+                AccordionView(card: dataModel.cardsList[currentIndex + 1])
+            }
+            .transition(.move(edge: .leading))
+            .animation(.easeInOut(duration: 0.5), value: currentIndex)
+            
+            // MARK: PROXIMO
+            if currentIndex < dataModel.cardsList.count - 2 {
+                Button {
+                    currentIndex += 2
+                } label: {
+                    Image(systemName: "chevron.right")
+                }
+            } else {
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.gray)
+            }
+            
         }
     }
+    
 }
 
 #Preview(traits: .landscapeLeft) {
