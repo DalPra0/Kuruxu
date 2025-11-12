@@ -13,6 +13,6 @@ struct CameraView: View {
     }
 }
 
-#Preview(traits: .landscapeRight) {
+#Preview(traits: .landscapeLeft) {
     CameraView()
 }
