@@ -8,10 +8,50 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State var currentIndex = 0
+    @State var activeCard: CardModel?
+    let dataModel = DataModel()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        HStack{
+            // MARK: VOLTAR
+            if currentIndex >= 1{
+                Button{
+                    if currentIndex > 0 {
+                        currentIndex -= 2
+                    }
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+            } else {
+                Image(systemName: "chevron.left")
+                    .foregroundStyle(.gray)
+            }
+            
+            HStack{
+                AccordionView(card: dataModel.cardsList[currentIndex])
+                AccordionView(card: dataModel.cardsList[currentIndex + 1])
+            }
+            .transition(.move(edge: .leading))
+            .animation(.easeInOut(duration: 0.5), value: currentIndex)
+            
+            // MARK: PROXIMO
+            if currentIndex < dataModel.cardsList.count - 2 {
+                Button {
+                    currentIndex += 2
+                } label: {
+                    Image(systemName: "chevron.right")
+                }
+            } else {
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.gray)
+            }
+            
+        }
     }
+    
 }
+
 
 #Preview(traits: .landscapeRight) {
     HomeView()
