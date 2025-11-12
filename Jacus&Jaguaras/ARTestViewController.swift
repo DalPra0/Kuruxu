@@ -3,7 +3,6 @@
 //  Jacus&Jaguaras
 //
 //  Created by Lucas Dal Pra Brascher on 10/11/25.
-//  VERSÃO: 4 Cartas Diferentes
 //
 
 import UIKit
