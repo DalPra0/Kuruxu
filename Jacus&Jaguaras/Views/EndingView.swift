@@ -8,11 +8,61 @@
 import SwiftUI
 
 struct EndingView: View {
+    
+    var constellationName: String = "Anta do Norte"
+    var constellationStory: String = "Segundo a lenda, a anta celestial percorre o céu todas as noites, protegendo as nascentes e os animais da floresta. Quando ela mergulha no horizonte, diz-se que está descendo para beber água nos rios da Terra, por isso, sua aparição marcava o tempo das chuvas e da fartura."
+    var imageName: String = ""
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        HStack{
+            VStack(alignment: .leading, spacing: 24){
+                VStack(alignment: .leading, spacing: 4){
+                    Text(constellationName)
+                        .foregroundStyle(.white)
+                        .font(.title)
+                        .bold()
+                    
+                    Text("Constelação")
+                        .foregroundStyle(.white.opacity(0.6))
+                        .font(.title2)
+                        .bold()
+                }
+                
+                Text(constellationStory)
+                    .foregroundStyle(.white)
+                    .font(.system(size: 15))
+                    .frame(maxWidth: 267, maxHeight: 169)
+                    .multilineTextAlignment(.leading)
+                
+                Button(){
+                    
+                }label:{
+                    Text("Voltar a tela inicial")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.gray.opacity(0.4))
+                        .cornerRadius(18)
+                }
+            }
+            .padding(.horizontal, 32)
+            .frame(width: 393)
+            .frame(maxHeight: .infinity)
+            .background(.white.opacity(0.1))
+            
+            Rectangle()
+                .fill(.black)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .ignoresSafeArea()
+        .background(.black)
     }
 }
 
-#Preview(traits: .landscapeRight) {
+#Preview(traits: .landscapeLeft) {
     EndingView()
 }

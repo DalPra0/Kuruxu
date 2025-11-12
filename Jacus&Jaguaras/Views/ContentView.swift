@@ -9,10 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        HomeView()
+       StartView()
     }
 }
 
-#Preview(traits: .landscapeRight) {
+#Preview(traits: .landscapeLeft) {
     ContentView()
 }
