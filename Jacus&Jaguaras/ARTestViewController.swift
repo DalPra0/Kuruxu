@@ -3,6 +3,7 @@
 //  Jacus&Jaguaras
 //
 //  Created by Lucas Dal Pra Brascher on 10/11/25.
+//  VERSÃO: 4 Cartas Diferentes
 //
 
 import UIKit
@@ -12,13 +13,15 @@ import SceneKit
 class ARTestViewController: UIViewController, ARSCNViewDelegate {
     
     private let sceneView = ARSCNView()
-    private var detectedMarkersCount = 0
     private var counterLabel: UILabel!
+    private var debugLabel: UILabel!
+    
+    private var detectedCards: [String: ARAnchor] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupARScene()
-        addCloseButton()
+        addUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,26 +47,43 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     }
     
     private func startARSession() {
-        guard let markerImage = UIImage(named: "marker"),
-              let cgImage = markerImage.cgImage else {
-            print("Erro: Marker não encontrado nos Assets!")
-            showAlert(message: "Marker não encontrado. Adicione 'marker' nos Assets.")
+        var referenceImages: Set<ARReferenceImage> = []
+        
+        for cardNumber in 1...4 {
+            guard let cardImage = UIImage(named: "carta_\(cardNumber)"),
+                  let cgImage = cardImage.cgImage else {
+                print("Erro: carta_\(cardNumber) não encontrada!")
+                continue
+            }
+            
+            let referenceImage = ARReferenceImage(cgImage, orientation: .up, physicalWidth: 0.088)
+            referenceImage.name = "carta_\(cardNumber)"
+            referenceImages.insert(referenceImage)
+            
+            print("Carta \(cardNumber) adicionada ao tracking")
+        }
+        
+        guard !referenceImages.isEmpty else {
+            showAlert(message: "Nenhuma carta encontrada nos Assets!")
             return
         }
         
-        let referenceImage = ARReferenceImage(cgImage, orientation: .up, physicalWidth: 0.15)
-        referenceImage.name = "star_marker"
-        
-        let configuration = ARImageTrackingConfiguration()
-        configuration.trackingImages = [referenceImage]
-        configuration.maximumNumberOfTrackedImages = 4  // quantidade maxima de markers
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.detectionImages = referenceImages
+        configuration.maximumNumberOfTrackedImages = 4
+        configuration.isAutoFocusEnabled = true
         
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         
         print("Sessão AR iniciada!")
+        print("Detectando 4 cartas diferentes")
+        print("   - Carta 1 (Azul)")
+        print("   - Carta 2 (Magenta)")
+        print("   - Carta 3 (Verde)")
+        print("   - Carta 4 (Laranja)")
     }
     
-    private func addCloseButton() {
+    private func addUI() {
         let closeButton = UIButton(type: .system)
         closeButton.setTitle("✕", for: .normal)
         closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 30, weight: .medium)
@@ -76,16 +96,29 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         view.addSubview(closeButton)
         
         counterLabel = UILabel()
-        counterLabel.text = "🎯 Markers: 0"
+        counterLabel.text = "Cartas: 0/4"
         counterLabel.textColor = .white
         counterLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         counterLabel.textAlignment = .center
         counterLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         counterLabel.layer.cornerRadius = 15
         counterLabel.clipsToBounds = true
-        counterLabel.frame = CGRect(x: 20, y: 50, width: 180, height: 50)
+        counterLabel.frame = CGRect(x: 20, y: 50, width: 200, height: 50)
         counterLabel.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin]
         view.addSubview(counterLabel)
+        
+        debugLabel = UILabel()
+        debugLabel.text = "🔧 Aguardando cartas..."
+        debugLabel.textColor = .white
+        debugLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        debugLabel.textAlignment = .left
+        debugLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        debugLabel.numberOfLines = 0
+        debugLabel.layer.cornerRadius = 10
+        debugLabel.clipsToBounds = true
+        debugLabel.frame = CGRect(x: 20, y: 120, width: view.bounds.width - 40, height: 120)
+        debugLabel.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin, .flexibleWidth]
+        view.addSubview(debugLabel)
     }
     
     @objc private func closeTapped() {
@@ -94,35 +127,74 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard let imageAnchor = anchor as? ARImageAnchor else { return }
+        guard let imageAnchor = anchor as? ARImageAnchor,
+              let cardName = imageAnchor.referenceImage.name else { return }
         
-        detectedMarkersCount += 1
+        let position = simd_float3(imageAnchor.transform.columns.3.x,
+                                   imageAnchor.transform.columns.3.y,
+                                   imageAnchor.transform.columns.3.z)
         
-        print("Marker #\(detectedMarkersCount) detectado: \(imageAnchor.referenceImage.name ?? "desconhecido")")
+        for (existingCardName, existingAnchor) in detectedCards {
+            if let existingImageAnchor = existingAnchor as? ARImageAnchor {
+                let existingPos = simd_float3(existingImageAnchor.transform.columns.3.x,
+                                              existingImageAnchor.transform.columns.3.y,
+                                              existingImageAnchor.transform.columns.3.z)
+                let distance = simd_distance(position, existingPos)
+                
+                if distance < 0.10 {
+                    print("\(cardName) BLOQUEADA!")
+                    print("   → Já existe \(existingCardName) a \(String(format: "%.2f", distance))m")
+                    print("   → Mesma carta física detectada como múltiplas!")
+                    
+                    sceneView.session.remove(anchor: anchor)
+                    return
+                }
+            }
+        }
+        
+        if detectedCards[cardName] != nil {
+            print("\(cardName) JÁ DETECTADA - removendo duplicata")
+            sceneView.session.remove(anchor: anchor)
+            return
+        }
+        
+        detectedCards[cardName] = anchor
+        
+        let cardNumber = Int(cardName.replacingOccurrences(of: "carta_", with: "")) ?? 0
+        
+        print("\(cardName.uppercased()) ACEITA!")
+        print("   Posição: (\(String(format: "%.2f", position.x)), \(String(format: "%.2f", position.y)), \(String(format: "%.2f", position.z)))")
+        print("   Total detectadas: \(detectedCards.count)/4")
         
         DispatchQueue.main.async {
             self.updateCounter()
-            self.add3DModel(to: node)
+            self.updateDebugInfo()
+            self.add3DModel(to: node, cardNumber: cardNumber, cardName: cardName)
         }
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
-        guard anchor is ARImageAnchor else { return }
+        guard let imageAnchor = anchor as? ARImageAnchor,
+              let cardName = imageAnchor.referenceImage.name else { return }
         
-        detectedMarkersCount = max(0, detectedMarkersCount - 1)
+        detectedCards.removeValue(forKey: cardName)
         
-        print("Marker removido. Total: \(detectedMarkersCount)")
+        print("\(cardName.uppercased()) removida")
+        print("   Total: \(detectedCards.count)/4")
         
         DispatchQueue.main.async {
             self.updateCounter()
+            self.updateDebugInfo()
         }
     }
     
-    private func add3DModel(to node: SCNNode) {
+    private func add3DModel(to node: SCNNode, cardNumber: Int, cardName: String) {
+        node.childNodes.forEach { $0.removeFromParentNode() }
+        
         guard let modelURL = Bundle.main.url(forResource: "D20", withExtension: "usdz"),
               let modelScene = try? SCNScene(url: modelURL),
               let modelNode = modelScene.rootNode.childNodes.first else {
-            print("❌ Erro ao carregar D20.usdz")
+            print("Erro ao carregar D20.usdz")
             return
         }
         
@@ -137,52 +209,107 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         
         let size = maxVec - minVec
         let largestDimension = max(size.x, size.y, size.z)
-        let targetSize: Float = 0.05
+        let targetSize: Float = 0.04
         let scaleFactor = targetSize / largestDimension
         modelNode.scale = SCNVector3(scaleFactor, scaleFactor, scaleFactor)
         
-        modelNode.position.y = 0.02
+        modelNode.position.y = 0.05
         
         let rotation = SCNAction.rotateBy(x: 0, y: CGFloat.pi * 2, z: 0, duration: 4)
         let repeatRotation = SCNAction.repeatForever(rotation)
         modelNode.runAction(repeatRotation)
         
+        let cardColors: [UIColor] = [
+            .systemCyan,
+            .systemPink,
+            .systemGreen,
+            .systemOrange
+        ]
+        
+        if let geometry = modelNode.geometry {
+            let material = SCNMaterial()
+            material.diffuse.contents = cardColors[cardNumber - 1]
+            geometry.materials = [material]
+        }
+        
         node.addChildNode(modelNode)
         
-        print("D20 adicionado ao marker!")
+        let textNode = createTextNode(text: "\(cardNumber)", color: cardColors[cardNumber - 1])
+        textNode.position.y = 0.09
+        node.addChildNode(textNode)
         
-        showSuccessMessage()
+        print("D20 da \(cardName) adicionado!")
+    }
+    
+    private func createTextNode(text: String, color: UIColor) -> SCNNode {
+        let textGeometry = SCNText(string: text, extrusionDepth: 1)
+        textGeometry.font = UIFont.systemFont(ofSize: 10, weight: .bold)
+        textGeometry.firstMaterial?.diffuse.contents = color
+        
+        let textNode = SCNNode(geometry: textGeometry)
+        
+        let (min, max) = textNode.boundingBox
+        let width = max.x - min.x
+        textNode.pivot = SCNMatrix4MakeTranslation((min.x + width/2), 0, 0)
+        
+        textNode.scale = SCNVector3(0.002, 0.002, 0.002)
+        
+        return textNode
     }
     
     private func updateCounter() {
-        counterLabel.text = "🎯 Markers: \(detectedMarkersCount)"
+        let count = detectedCards.count
+        counterLabel.text = "Cartas: \(count)/4"
         
-        if detectedMarkersCount > 0 {
-            UIView.animate(withDuration: 0.2) {
-                self.counterLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.8)
-            } completion: { _ in
-                UIView.animate(withDuration: 0.2) {
-                    self.counterLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-                }
+        let backgroundColor: UIColor
+        switch count {
+        case 0:
+            backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        case 1:
+            backgroundColor = UIColor.systemCyan.withAlphaComponent(0.8)
+        case 2:
+            backgroundColor = UIColor.systemPink.withAlphaComponent(0.8)
+        case 3:
+            backgroundColor = UIColor.systemGreen.withAlphaComponent(0.8)
+        case 4:
+            backgroundColor = UIColor.systemOrange.withAlphaComponent(0.8)
+        default:
+            backgroundColor = UIColor.systemRed.withAlphaComponent(0.8)
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.counterLabel.backgroundColor = backgroundColor
+        }
+        
+        if count == 4 {
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            
+            UIView.animate(withDuration: 0.5, delay: 0, options: [.autoreverse, .repeat], animations: {
+                self.counterLabel.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            }) { _ in
+                self.counterLabel.transform = .identity
             }
         }
     }
     
-    private func showSuccessMessage() {
-        let label = UILabel()
-        label.text = "Marker detectado!"
-        label.textColor = .white
-        label.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.8)
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        label.layer.cornerRadius = 10
-        label.clipsToBounds = true
-        label.frame = CGRect(x: view.bounds.width/2 - 100, y: 100, width: 200, height: 50)
-        view.addSubview(label)
+    private func updateDebugInfo() {
+        let count = detectedCards.count
+        var debugText = "DEBUG\n"
+        debugText += "Detectadas: \(count)/4\n\n"
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            label.removeFromSuperview()
+        if count > 0 {
+            let sortedCards = detectedCards.keys.sorted()
+            for cardName in sortedCards {
+                let number = cardName.replacingOccurrences(of: "carta_", with: "")
+            }
+        } else {
+            debugText += "Coloque as cartas na mesa\n"
+            debugText += "Mantenha espaçamento\n"
+            debugText += "Boa iluminação\n"
         }
+        
+        debugLabel.text = debugText
     }
     
     private func showAlert(message: String) {
