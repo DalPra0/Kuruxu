@@ -60,3 +60,6 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+Jacus&Jaguaras.xcodeproj/project.xcworkspace/xcuserdata/carlaaraujo.xcuserdatad/UserInterfaceState.xcuserstate
+Jacus&Jaguaras.xcodeproj/xcuserdata/carlaaraujo.xcuserdatad/xcschemes/xcschememanagement.plist
