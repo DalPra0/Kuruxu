@@ -19,11 +19,7 @@ struct StartView: View {
                         .font(.system(size: 40))
                         .foregroundStyle(.black)
                 }
-            
-            Button(){
-                
-            }label: {
-                
+            NavigationLink(destination: HomeView()){
                 RoundedRectangle(cornerRadius: 24)
                     .fill(Color(uiColor: .systemGray4))
                     .frame(width: 161, height: 69)

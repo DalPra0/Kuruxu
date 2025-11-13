@@ -14,12 +14,12 @@ struct AccordionView: View{
     var body: some View {
         Form{
             VStack{
-                Image(card.imageName)
-                        .resizable()
-                        .scaledToFit()
-                        .cornerRadius(8)
-                        .padding(.horizontal, 20)
-                        .padding(.top, 14)
+                    Image(card.imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .cornerRadius(8)
+                            .padding(.horizontal, 20)
+                            .padding(.top, 14)
                 DisclosureGroup(card.title, isExpanded: $revealDetails) {
                     Text(card.text)
                     }
@@ -33,6 +33,6 @@ struct AccordionView: View{
     AccordionView(card:         CardModel(
         imageName: "star",
         title: "Anta do Norte",
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed congue libero porta viverra venenatis. Ut vitae est non magna vehicula fringilla."
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     ))
 }
