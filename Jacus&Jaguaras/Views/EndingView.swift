@@ -9,8 +9,8 @@ import SwiftUI
 
 struct EndingView: View {
     
-    var constellationName: String = "Anta do Norte"
-    var constellationStory: String = "Segundo a lenda, a anta celestial percorre o céu todas as noites, protegendo as nascentes e os animais da floresta. Quando ela mergulha no horizonte, diz-se que está descendo para beber água nos rios da Terra, por isso, sua aparição marcava o tempo das chuvas e da fartura."
+    let card: CardModel
+    
     var imageName: String = ""
     
     var body: some View {
@@ -18,7 +18,7 @@ struct EndingView: View {
         HStack{
             VStack(alignment: .leading, spacing: 24){
                 VStack(alignment: .leading, spacing: 4){
-                    Text(constellationName)
+                    Text(card.title)
                         .foregroundStyle(.white)
                         .font(.title)
                         .bold()
@@ -29,23 +29,23 @@ struct EndingView: View {
                         .bold()
                 }
                 
-                Text(constellationStory)
+                Text(card.text)
                     .foregroundStyle(.white)
                     .font(.system(size: 15))
                     .frame(maxWidth: 267, maxHeight: 169)
                     .multilineTextAlignment(.leading)
                 
-                Button(){
-                    
-                }label:{
-                    Text("Voltar a tela inicial")
-                        .foregroundStyle(.white)
-                        .font(.system(size: 16, weight: .semibold))
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(.gray.opacity(0.4))
-                        .cornerRadius(18)
-                }
+//                Button(){
+//                    
+//                }label:{
+//                    Text("Voltar a tela inicial")
+//                        .foregroundStyle(.white)
+//                        .font(.system(size: 16, weight: .semibold))
+//                        .padding()
+//                        .frame(maxWidth: .infinity)
+//                        .background(.gray.opacity(0.4))
+//                        .cornerRadius(18)
+//                }
             }
             .padding(.horizontal, 32)
             .frame(width: 393)
@@ -64,5 +64,10 @@ struct EndingView: View {
 }
 
 #Preview(traits: .landscapeLeft) {
-    EndingView()
+    EndingView(card:
+        CardModel(
+        imageName: "star",
+        title: "Anta do Norte",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    ))
 }
