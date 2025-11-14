@@ -9,27 +9,34 @@ import SwiftUI
 
 struct StartView: View {
     var body: some View {
-        VStack(spacing: 40){
+        ZStack{
             
-            RoundedRectangle(cornerRadius: 24)
-                .fill(Color(uiColor: .systemGray4))
-                .frame(width: 229, height: 88)
-                .overlay{
-                    Text("Logo")
-                        .font(.system(size: 40))
-                        .foregroundStyle(.black)
+            Image("starBackground")
+                .resizable()
+                .scaledToFill()
+            
+            VStack(spacing: 40){
+                Image("logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 297, height: 125)
+                
+                NavigationLink(destination: HomeView()){
+                    RoundedRectangle(cornerRadius: 64)
+                        .fill(Color(uiColor: .secondary400))
+                        .frame(width: 244, height: 49)
+                        .overlay{
+                            Text("Começar")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.primary600)
+                        }
                 }
-            NavigationLink(destination: HomeView()){
-                RoundedRectangle(cornerRadius: 24)
-                    .fill(Color(uiColor: .systemGray4))
-                    .frame(width: 161, height: 69)
-                    .overlay{
-                        Text("Começar")
-                            .font(.system(size: 24))
-                            .foregroundStyle(.black)
-                    }
             }
         }
+        .background(
+            LinearGradient(gradient: Gradient(colors: [.primary900, .primary600]), startPoint: .top, endPoint: .bottom)
+        )
     }
 }
 
