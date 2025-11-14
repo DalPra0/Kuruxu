@@ -32,7 +32,7 @@ struct HomeView: View {
                 NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex])) {
                     AccordionView(card: dataModel.cardsList[currentIndex])
                 }
-                NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex])){
+                NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex + 1])){
                     AccordionView(card: dataModel.cardsList[currentIndex + 1])
                 }
             }

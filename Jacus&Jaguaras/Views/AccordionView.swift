@@ -17,6 +17,7 @@ struct AccordionView: View{
                     Image(card.imageName)
                             .resizable()
                             .scaledToFit()
+                            .frame(width: 225, height: 160)
                             .cornerRadius(8)
                             .padding(.horizontal, 20)
                             .padding(.top, 14)
@@ -25,6 +26,7 @@ struct AccordionView: View{
                     }
                     .padding(8)
             }
+           
         }
     }
 }
