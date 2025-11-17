@@ -1,0 +1,73 @@
+//
+//  EndingView.swift
+//  Jacus&Jaguaras
+//
+//  Created by Crisspy on 11/11/25.
+//
+
+import SwiftUI
+
+struct EndingView: View {
+    
+    let card: CardModel
+    
+    var imageName: String = ""
+    
+    var body: some View {
+        
+        HStack{
+            VStack(alignment: .leading, spacing: 24){
+                VStack(alignment: .leading, spacing: 4){
+                    Text(card.title)
+                        .foregroundStyle(.white)
+                        .font(.title)
+                        .bold()
+                    
+                    Text("Constelação")
+                        .foregroundStyle(.white.opacity(0.6))
+                        .font(.title2)
+                        .bold()
+                }
+                
+                Text(card.text)
+                    .foregroundStyle(.white)
+                    .font(.system(size: 15))
+                    .frame(maxWidth: 267, maxHeight: 169)
+                    .multilineTextAlignment(.leading)
+                
+//                Button(){
+//                    
+//                }label:{
+//                    Text("Voltar a tela inicial")
+//                        .foregroundStyle(.white)
+//                        .font(.system(size: 16, weight: .semibold))
+//                        .padding()
+//                        .frame(maxWidth: .infinity)
+//                        .background(.gray.opacity(0.4))
+//                        .cornerRadius(18)
+//                }
+            }
+            .padding(.horizontal, 32)
+            .frame(width: 393)
+            .frame(maxHeight: .infinity)
+            .background(.white.opacity(0.1))
+            
+            Rectangle()
+                .fill(.black)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .ignoresSafeArea()
+        .background(.black)
+    }
+}
+
+#Preview(traits: .landscapeLeft) {
+    EndingView(card:
+        CardModel(
+        imageName: "star",
+        title: "Anta do Norte",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    ))
+}

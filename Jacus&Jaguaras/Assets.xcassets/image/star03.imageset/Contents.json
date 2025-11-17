@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "night-sky-galaxy-cloud-with-nebula-starry-in-dark-blue-background-universe-filled-with-star-light-in-purple-pink-beautiful-nature-star-field-with-milky-way-horizon-banner-colorful-cosmos-stardust-vector.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
