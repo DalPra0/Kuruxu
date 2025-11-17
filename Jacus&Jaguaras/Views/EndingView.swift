@@ -35,17 +35,15 @@ struct EndingView: View {
                     .frame(maxWidth: 267, maxHeight: 169)
                     .multilineTextAlignment(.leading)
                 
-//                Button(){
-//                    
-//                }label:{
-//                    Text("Voltar a tela inicial")
-//                        .foregroundStyle(.white)
-//                        .font(.system(size: 16, weight: .semibold))
-//                        .padding()
-//                        .frame(maxWidth: .infinity)
-//                        .background(.gray.opacity(0.4))
-//                        .cornerRadius(18)
-//                }
+                NavigationLink(destination: HomeView()){
+                    Text("Voltar a tela inicial")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.gray.opacity(0.4))
+                        .cornerRadius(18)
+                }
             }
             .padding(.horizontal, 32)
             .frame(width: 393)
@@ -63,7 +61,7 @@ struct EndingView: View {
     }
 }
 
-#Preview(traits: .landscapeLeft) {
+#Preview() {
     EndingView(card:
         CardModel(
         imageName: "star",

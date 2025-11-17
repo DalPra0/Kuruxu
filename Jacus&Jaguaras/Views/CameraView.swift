@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct CameraView: View {
+    
+    let dataModel = DataModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+       ZStack{
+           ARTestView()
+           NavigationLink(destination: EndingView(card: dataModel.cardsList[0])){
+               Text("OK")
+                   .font(.title)
+                   .foregroundStyle(.white)
+                   .padding()
+                   .background(.black.opacity(0.7))
+           }
+       }
     }
 }
 
-#Preview(traits: .landscapeLeft) {
+#Preview() {
     CameraView()
 }
