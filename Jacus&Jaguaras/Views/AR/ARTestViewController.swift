@@ -1,0 +1,141 @@
+import UIKit
+import ARKit
+import SceneKit
+
+class ARTestViewController: UIViewController, ARSCNViewDelegate {
+    
+    private let sceneView = ARSCNView()
+    private var detectedCards: [String: ARAnchor] = [:]
+    
+    private let sessionManager = ARSessionManager()
+    private let modelManager = ARModelManager()
+    private let triangleDetector = ARTriangleDetector()
+    private let uiManager = ARUIManager()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupARScene()
+        setupUI()
+        setupTriangleDetector()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startARSession()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        sessionManager.pauseSession()
+    }
+    
+    private func setupARScene() {
+        view.addSubview(sceneView)
+        sceneView.frame = view.bounds
+        sceneView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        sceneView.delegate = self
+        sceneView.autoenablesDefaultLighting = true
+        sceneView.automaticallyUpdatesLighting = true
+        sceneView.showsStatistics = true
+        
+        sessionManager.sceneView = sceneView
+    }
+    
+    private func setupUI() {
+        uiManager.setupUI(in: view) { [weak self] in
+            self?.dismiss(animated: true)
+        }
+    }
+    
+    private func setupTriangleDetector() {
+        triangleDetector.onTriangleDetected = { [weak self] in
+            self?.uiManager.showTriangleMessage()
+        }
+        
+        triangleDetector.onTriangleLost = { [weak self] in
+            self?.uiManager.hideTriangleMessage()
+        }
+    }
+    
+    private func startARSession() {
+        sessionManager.startSession { [weak self] success, errorMessage in
+            if !success, let message = errorMessage {
+                self?.showAlert(message: message)
+            }
+        }
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard let imageAnchor = anchor as? ARImageAnchor,
+              let cardName = imageAnchor.referenceImage.name else { return }
+        
+        let position = simd_float3(imageAnchor.transform.columns.3.x,
+                                   imageAnchor.transform.columns.3.y,
+                                   imageAnchor.transform.columns.3.z)
+        
+        for (existingCardName, existingAnchor) in detectedCards {
+            if let existingImageAnchor = existingAnchor as? ARImageAnchor {
+                let existingPos = simd_float3(existingImageAnchor.transform.columns.3.x,
+                                              existingImageAnchor.transform.columns.3.y,
+                                              existingImageAnchor.transform.columns.3.z)
+                let distance = simd_distance(position, existingPos)
+                
+                if distance < 0.10 {
+                    print("[\(cardName)] BLOQUEADA - Duplicata espacial!")
+                    print("   -> Já existe [\(existingCardName)] a \(String(format: "%.2f", distance))m")
+                    sceneView.session.remove(anchor: anchor)
+                    return
+                }
+            }
+        }
+        
+        if detectedCards[cardName] != nil {
+            print("[\(cardName)] JÁ DETECTADA - removendo duplicata")
+            sceneView.session.remove(anchor: anchor)
+            return
+        }
+        
+        detectedCards[cardName] = anchor
+        
+        print("[\(cardName)] DETECTADA!")
+        print("   Posição: (\(String(format: "%.2f", position.x)), \(String(format: "%.2f", position.y)), \(String(format: "%.2f", position.z)))")
+        print("   Total: \(detectedCards.count)/\(sessionManager.totalCardsAvailable)")
+        
+        DispatchQueue.main.async {
+            self.updateUI()
+            self.modelManager.add3DModel(to: node, cardName: cardName)
+            self.triangleDetector.checkForTriangle(detectedCards: self.detectedCards)
+        }
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
+        guard let imageAnchor = anchor as? ARImageAnchor,
+              let cardName = imageAnchor.referenceImage.name else { return }
+        
+        detectedCards.removeValue(forKey: cardName)
+        
+        print("[\(cardName)] REMOVIDA")
+        print("   Total: \(detectedCards.count)/\(sessionManager.totalCardsAvailable)")
+        
+        DispatchQueue.main.async {
+            self.updateUI()
+            self.triangleDetector.checkForTriangle(detectedCards: self.detectedCards)
+        }
+    }
+    
+    private func updateUI() {
+        let count = detectedCards.count
+        let total = sessionManager.totalCardsAvailable
+        let cardNames = Array(detectedCards.keys)
+        
+        uiManager.updateCounter(count: count, total: total)
+        uiManager.updateDebugInfo(count: count, total: total, cardNames: cardNames)
+    }
+    
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+}
