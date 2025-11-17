@@ -9,14 +9,14 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     
     private let sessionManager = ARSessionManager()
     private let modelManager = ARModelManager()
-    private let triangleDetector = ARTriangleDetector()
+    private let constellationDetector = ARConstellationDetector()
     private let uiManager = ARUIManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupARScene()
         setupUI()
-        setupTriangleDetector()
+        setupConstellationDetector()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,13 +48,13 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    private func setupTriangleDetector() {
-        triangleDetector.onTriangleDetected = { [weak self] in
-            self?.uiManager.showTriangleMessage()
+    private func setupConstellationDetector() {
+        constellationDetector.onConstellationDetected = { [weak self] constellationName in
+            self?.uiManager.showConstellationMessage(name: constellationName)
         }
-        
-        triangleDetector.onTriangleLost = { [weak self] in
-            self?.uiManager.hideTriangleMessage()
+
+        constellationDetector.onConstellationLost = { [weak self] in
+            self?.uiManager.hideConstellationMessage()
         }
     }
     
@@ -105,7 +105,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         DispatchQueue.main.async {
             self.updateUI()
             self.modelManager.add3DModel(to: node, cardName: cardName)
-            self.triangleDetector.checkForTriangle(detectedCards: self.detectedCards)
+            self.constellationDetector.checkForConstellation(detectedCards: self.detectedCards)
         }
     }
     
@@ -120,7 +120,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         
         DispatchQueue.main.async {
             self.updateUI()
-            self.triangleDetector.checkForTriangle(detectedCards: self.detectedCards)
+            self.constellationDetector.checkForConstellation(detectedCards: self.detectedCards)
         }
     }
     

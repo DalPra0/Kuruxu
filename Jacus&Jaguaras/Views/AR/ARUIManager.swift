@@ -128,9 +128,9 @@ class ARUIManager {
         debugLabel.text = debugText
     }
     
-    func showTriangleMessage() {
-        triangleLabel.text = "🔺 TRIÂNGULO FEITO!"
-        
+    func showConstellationMessage(name: String) {
+        triangleLabel.text = "\(name.uppercased())!"
+
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: [], animations: {
             self.triangleLabel.alpha = 1.0
             self.triangleLabel.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
@@ -139,12 +139,12 @@ class ARUIManager {
                 self.triangleLabel.transform = .identity
             }
         }
-        
+
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
     }
-    
-    func hideTriangleMessage() {
+
+    func hideConstellationMessage() {
         UIView.animate(withDuration: 0.3) {
             self.triangleLabel.alpha = 0
         }

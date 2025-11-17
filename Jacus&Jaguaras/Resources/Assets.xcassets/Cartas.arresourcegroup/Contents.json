@@ -5,16 +5,37 @@
   },
   "resources" : [
     {
-      "filename" : "akul.arreferenceimage"
+      "filename" : "aya-of-alexandria.arreferenceimage"
+    },
+    {
+      "filename" : "copy.arreferenceimage"
+    },
+    {
+      "filename" : "diabolic-tutor.arreferenceimage"
+    },
+    {
+      "filename" : "dogmeat.arreferenceimage"
+    },
+    {
+      "filename" : "elefante.arreferenceimage"
+    },
+    {
+      "filename" : "Gosmanuladora.arreferenceimage"
+    },
+    {
+      "filename" : "humano.arreferenceimage"
+    },
+    {
+      "filename" : "ilha.arreferenceimage"
     },
     {
       "filename" : "mimico.arreferenceimage"
     },
     {
-      "filename" : "radiation.arreferenceimage"
+      "filename" : "settlement.arreferenceimage"
     },
     {
-      "filename" : "settlement.arreferenceimage"
+      "filename" : "soldier.arreferenceimage"
     }
   ]
 }

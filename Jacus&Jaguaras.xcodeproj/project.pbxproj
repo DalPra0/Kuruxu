@@ -10,9 +10,22 @@
 		15D6953D2EC22142005D8852 /* Jacus&Jaguaras.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jacus&Jaguaras.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		158993B92ECBAAB900523488 /* Exceptions for "Jacus&Jaguaras" folder in "Jacus&Jaguaras" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Jacus-Jaguaras-Info.plist",
+			);
+			target = 15D6953C2EC22142005D8852 /* Jacus&Jaguaras */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		15D6953F2EC22142005D8852 /* Jacus&Jaguaras */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				158993B92ECBAAB900523488 /* Exceptions for "Jacus&Jaguaras" folder in "Jacus&Jaguaras" target */,
+			);
 			path = "Jacus&Jaguaras";
 			sourceTree = "<group>";
 		};
@@ -256,8 +269,10 @@
 				DEVELOPMENT_TEAM = 982D3NRR89;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Jacus-Jaguaras-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Kuruxu;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.educational-games";
+				INFOPLIST_KEY_NSCameraUsageDescription = "libera a camera ai";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -294,8 +309,10 @@
 				DEVELOPMENT_TEAM = 982D3NRR89;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Jacus-Jaguaras-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Kuruxu;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.educational-games";
+				INFOPLIST_KEY_NSCameraUsageDescription = "libera a camera ai";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

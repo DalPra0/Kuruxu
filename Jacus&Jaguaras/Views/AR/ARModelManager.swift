@@ -9,7 +9,6 @@ class ARModelManager {
         guard let modelURL = Bundle.main.url(forResource: "star", withExtension: "usdz"),
               let modelScene = try? SCNScene(url: modelURL),
               let modelNode = modelScene.rootNode.childNodes.first else {
-            print("Erro ao carregar star.usdz")
             return
         }
         
