@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8A2437AA2ECB800B00A86D4D /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8A2437A92ECB800B00A86D4D /* SnapKit */; };
+		8A2437AC2ECB800B00A86D4D /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 8A2437AB2ECB800B00A86D4D /* SnapKit-Dynamic */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		15D6953D2EC22142005D8852 /* Jacus&Jaguaras.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jacus&Jaguaras.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A2437AA2ECB800B00A86D4D /* SnapKit in Frameworks */,
+				8A2437AC2ECB800B00A86D4D /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +72,8 @@
 			);
 			name = "Jacus&Jaguaras";
 			packageProductDependencies = (
+				8A2437A92ECB800B00A86D4D /* SnapKit */,
+				8A2437AB2ECB800B00A86D4D /* SnapKit-Dynamic */,
 			);
 			productName = "Jacus&Jaguaras";
 			productReference = 15D6953D2EC22142005D8852 /* Jacus&Jaguaras.app */;
@@ -94,6 +103,9 @@
 			);
 			mainGroup = 15D695342EC22142005D8852;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8A2437A82ECB800B00A86D4D /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 15D6953E2EC22142005D8852 /* Products */;
 			projectDirPath = "";
@@ -344,6 +356,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8A2437A82ECB800B00A86D4D /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8A2437A92ECB800B00A86D4D /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A2437A82ECB800B00A86D4D /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		8A2437AB2ECB800B00A86D4D /* SnapKit-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A2437A82ECB800B00A86D4D /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = "SnapKit-Dynamic";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 15D695352EC22142005D8852 /* Project object */;
 }
