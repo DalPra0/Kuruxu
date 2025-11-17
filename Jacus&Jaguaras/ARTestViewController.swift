@@ -1,10 +1,3 @@
-//
-//  ARTestViewController.swift
-//  Jacus&Jaguaras
-//
-//  Created by Lucas Dal Pra Brascher on 10/11/25.
-//
-
 import UIKit
 import ARKit
 import SceneKit
@@ -14,8 +7,11 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     private let sceneView = ARSCNView()
     private var counterLabel: UILabel!
     private var debugLabel: UILabel!
+    private var triangleLabel: UILabel!
     
     private var detectedCards: [String: ARAnchor] = [:]
+    private var totalCardsAvailable: Int = 0
+    private var triangleDetected: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,43 +44,54 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     private func startARSession() {
         var referenceImages: Set<ARReferenceImage> = []
         
-        for cardNumber in 1...4 {
-            guard let cardImage = UIImage(named: "carta_\(cardNumber)"),
-                  let cgImage = cardImage.cgImage else {
-                print("Erro: carta_\(cardNumber) não encontrada!")
-                continue
+        guard let arAssets = ARReferenceImage.referenceImages(inGroupNamed: "Cartas", bundle: nil) else {
+            print("ERRO: Pasta 'Cartas' não encontrada no Assets!")
+            print("   Crie um AR Resource Group chamado 'Cartas' no Assets.xcassets")
+            print("   e adicione as imagens de cartas lá")
+            showAlert(message: "Pasta 'Cartas' não encontrada! Adicione imagens no Assets.")
+            return
+        }
+        
+        if true {
+            referenceImages = arAssets
+            totalCardsAvailable = referenceImages.count
+            
+            print("===========================================")
+            print("CARTAS CARREGADAS DA PASTA 'Cartas':")
+            print("   Total: \(totalCardsAvailable) cartas")
+            print("-------------------------------------------")
+            for (index, image) in referenceImages.enumerated() {
+                print("   [\(index + 1)] \(image.name ?? "sem_nome")")
+                print("       Tamanho: \(String(format: "%.3f", image.physicalSize.width))m")
             }
+            print("===========================================")
             
-            let referenceImage = ARReferenceImage(cgImage, orientation: .up, physicalWidth: 0.088)
-            referenceImage.name = "carta_\(cardNumber)"
-            referenceImages.insert(referenceImage)
-            
-            print("Carta \(cardNumber) adicionada ao tracking")
+        } else {
+            print("ERRO: Não foi possível carregar imagens AR")
+            print("   As imagens precisam estar em AR Resources")
+            showAlert(message: "Configure as imagens como AR Resources no Assets!")
+            return
         }
         
         guard !referenceImages.isEmpty else {
-            showAlert(message: "Nenhuma carta encontrada nos Assets!")
+            showAlert(message: "Nenhuma carta encontrada! Adicione imagens na pasta Cartas.")
             return
         }
         
         let configuration = ARWorldTrackingConfiguration()
         configuration.detectionImages = referenceImages
-        configuration.maximumNumberOfTrackedImages = 4
+        configuration.maximumNumberOfTrackedImages = min(totalCardsAvailable, 6)
         configuration.isAutoFocusEnabled = true
         
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         
-        print("Sessão AR iniciada!")
-        print("Detectando 4 cartas diferentes")
-        print("   - Carta 1 (Azul)")
-        print("   - Carta 2 (Magenta)")
-        print("   - Carta 3 (Verde)")
-        print("   - Carta 4 (Laranja)")
+        print("\nSessão AR iniciada!")
+        print("Detectando até \(configuration.maximumNumberOfTrackedImages) cartas simultâneas")
     }
     
     private func addUI() {
         let closeButton = UIButton(type: .system)
-        closeButton.setTitle("✕", for: .normal)
+        closeButton.setTitle("X", for: .normal)
         closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 30, weight: .medium)
         closeButton.tintColor = .white
         closeButton.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -95,7 +102,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         view.addSubview(closeButton)
         
         counterLabel = UILabel()
-        counterLabel.text = "Cartas: 0/4"
+        counterLabel.text = "Cartas: 0"
         counterLabel.textColor = .white
         counterLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         counterLabel.textAlignment = .center
@@ -107,7 +114,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         view.addSubview(counterLabel)
         
         debugLabel = UILabel()
-        debugLabel.text = "🔧 Aguardando cartas..."
+        debugLabel.text = "Aguardando cartas..."
         debugLabel.textColor = .white
         debugLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         debugLabel.textAlignment = .left
@@ -115,9 +122,25 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         debugLabel.numberOfLines = 0
         debugLabel.layer.cornerRadius = 10
         debugLabel.clipsToBounds = true
-        debugLabel.frame = CGRect(x: 20, y: 120, width: view.bounds.width - 40, height: 120)
+        debugLabel.frame = CGRect(x: 20, y: 120, width: view.bounds.width - 40, height: 150)
         debugLabel.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin, .flexibleWidth]
         view.addSubview(debugLabel)
+        
+        triangleLabel = UILabel()
+        triangleLabel.text = ""
+        triangleLabel.textColor = .white
+        triangleLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.9)
+        triangleLabel.textAlignment = .center
+        triangleLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        triangleLabel.layer.cornerRadius = 20
+        triangleLabel.clipsToBounds = true
+        triangleLabel.alpha = 0
+        triangleLabel.frame = CGRect(x: (view.bounds.width - 300) / 2, 
+                                     y: (view.bounds.height - 100) / 2, 
+                                     width: 300, 
+                                     height: 100)
+        triangleLabel.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
+        view.addSubview(triangleLabel)
     }
     
     @objc private func closeTapped() {
@@ -141,10 +164,8 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
                 let distance = simd_distance(position, existingPos)
                 
                 if distance < 0.10 {
-                    print("\(cardName) BLOQUEADA!")
-                    print("   → Já existe \(existingCardName) a \(String(format: "%.2f", distance))m")
-                    print("   → Mesma carta física detectada como múltiplas!")
-                    
+                    print("[\(cardName)] BLOQUEADA - Duplicata espacial!")
+                    print("   -> Já existe [\(existingCardName)] a \(String(format: "%.2f", distance))m")
                     sceneView.session.remove(anchor: anchor)
                     return
                 }
@@ -152,23 +173,22 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         }
         
         if detectedCards[cardName] != nil {
-            print("\(cardName) JÁ DETECTADA - removendo duplicata")
+            print("[\(cardName)] JÁ DETECTADA - removendo duplicata")
             sceneView.session.remove(anchor: anchor)
             return
         }
         
         detectedCards[cardName] = anchor
         
-        let cardNumber = Int(cardName.replacingOccurrences(of: "carta_", with: "")) ?? 0
-        
-        print("\(cardName.uppercased()) ACEITA!")
+        print("[\(cardName)] DETECTADA!")
         print("   Posição: (\(String(format: "%.2f", position.x)), \(String(format: "%.2f", position.y)), \(String(format: "%.2f", position.z)))")
-        print("   Total detectadas: \(detectedCards.count)/4")
+        print("   Total: \(detectedCards.count)/\(totalCardsAvailable)")
         
         DispatchQueue.main.async {
             self.updateCounter()
             self.updateDebugInfo()
-            self.add3DModel(to: node, cardNumber: cardNumber, cardName: cardName)
+            self.add3DModel(to: node, cardName: cardName)
+            self.checkForTriangle()
         }
     }
     
@@ -178,22 +198,23 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         
         detectedCards.removeValue(forKey: cardName)
         
-        print("\(cardName.uppercased()) removida")
-        print("   Total: \(detectedCards.count)/4")
+        print("[\(cardName)] REMOVIDA")
+        print("   Total: \(detectedCards.count)/\(totalCardsAvailable)")
         
         DispatchQueue.main.async {
             self.updateCounter()
             self.updateDebugInfo()
+            self.checkForTriangle()
         }
     }
     
-    private func add3DModel(to node: SCNNode, cardNumber: Int, cardName: String) {
+    private func add3DModel(to node: SCNNode, cardName: String) {
         node.childNodes.forEach { $0.removeFromParentNode() }
         
-        guard let modelURL = Bundle.main.url(forResource: "D20", withExtension: "usdz"),
+        guard let modelURL = Bundle.main.url(forResource: "estrela", withExtension: "usdz"),
               let modelScene = try? SCNScene(url: modelURL),
               let modelNode = modelScene.rootNode.childNodes.first else {
-            print("Erro ao carregar D20.usdz")
+            print("Erro ao carregar estrela.usdz")
             return
         }
         
@@ -218,26 +239,26 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         let repeatRotation = SCNAction.repeatForever(rotation)
         modelNode.runAction(repeatRotation)
         
-        let cardColors: [UIColor] = [
-            .systemCyan,
-            .systemPink,
-            .systemGreen,
-            .systemOrange
+        let colorIndex = abs(cardName.hashValue) % 10
+        let colors: [UIColor] = [
+            .systemCyan, .systemPink, .systemGreen, .systemOrange,
+            .systemYellow, .systemPurple, .systemBlue, .systemRed,
+            .systemIndigo, .systemTeal
         ]
         
         if let geometry = modelNode.geometry {
             let material = SCNMaterial()
-            material.diffuse.contents = cardColors[cardNumber - 1]
+            material.diffuse.contents = colors[colorIndex]
             geometry.materials = [material]
         }
         
         node.addChildNode(modelNode)
         
-        let textNode = createTextNode(text: "\(cardNumber)", color: cardColors[cardNumber - 1])
+        let textNode = createTextNode(text: cardName, color: colors[colorIndex])
         textNode.position.y = 0.09
         node.addChildNode(textNode)
         
-        print("D20 da \(cardName) adicionado!")
+        print("   3D modelo adicionado!")
     }
     
     private func createTextNode(text: String, color: UIColor) -> SCNNode {
@@ -258,29 +279,33 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     
     private func updateCounter() {
         let count = detectedCards.count
-        counterLabel.text = "Cartas: \(count)/4"
+        
+        if totalCardsAvailable > 0 {
+            counterLabel.text = "Cartas: \(count)/\(totalCardsAvailable)"
+        } else {
+            counterLabel.text = "Cartas: \(count)"
+        }
+        
+        let percentage = totalCardsAvailable > 0 ? Float(count) / Float(totalCardsAvailable) : 0
         
         let backgroundColor: UIColor
-        switch count {
-        case 0:
+        if percentage < 0.25 {
             backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        case 1:
+        } else if percentage < 0.5 {
             backgroundColor = UIColor.systemCyan.withAlphaComponent(0.8)
-        case 2:
-            backgroundColor = UIColor.systemPink.withAlphaComponent(0.8)
-        case 3:
+        } else if percentage < 0.75 {
             backgroundColor = UIColor.systemGreen.withAlphaComponent(0.8)
-        case 4:
+        } else if percentage < 1.0 {
             backgroundColor = UIColor.systemOrange.withAlphaComponent(0.8)
-        default:
-            backgroundColor = UIColor.systemRed.withAlphaComponent(0.8)
+        } else {
+            backgroundColor = UIColor.systemGreen.withAlphaComponent(0.9)
         }
         
         UIView.animate(withDuration: 0.3) {
             self.counterLabel.backgroundColor = backgroundColor
         }
         
-        if count == 4 {
+        if count == totalCardsAvailable && totalCardsAvailable > 0 {
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
             
@@ -295,17 +320,22 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     private func updateDebugInfo() {
         let count = detectedCards.count
         var debugText = "DEBUG\n"
-        debugText += "Detectadas: \(count)/4\n\n"
+        debugText += "Detectadas: \(count)"
+        if totalCardsAvailable > 0 {
+            debugText += "/\(totalCardsAvailable)\n\n"
+        } else {
+            debugText += "\n\n"
+        }
         
         if count > 0 {
             let sortedCards = detectedCards.keys.sorted()
             for cardName in sortedCards {
-                let number = cardName.replacingOccurrences(of: "carta_", with: "")
+                debugText += "- \(cardName)\n"
             }
         } else {
-            debugText += "Coloque as cartas na mesa\n"
-            debugText += "Mantenha espaçamento\n"
-            debugText += "Boa iluminação\n"
+            debugText += "Coloque cartas na mesa\n"
+            debugText += "Mantenha espacamento\n"
+            debugText += "Boa iluminacao\n"
         }
         
         debugLabel.text = debugText
@@ -315,6 +345,124 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+    
+    private func checkForTriangle() {
+        print("\n🔍 Verificando triângulo...")
+        print("   Cartas detectadas: \(detectedCards.count)")
+        
+        guard detectedCards.count >= 3 else {
+            print("   ❌ Menos de 3 cartas")
+            hideTriangleMessage()
+            return
+        }
+        
+        var positions: [simd_float3] = []
+        for anchor in detectedCards.values {
+            if let imageAnchor = anchor as? ARImageAnchor {
+                let pos = simd_float3(imageAnchor.transform.columns.3.x,
+                                     imageAnchor.transform.columns.3.y,
+                                     imageAnchor.transform.columns.3.z)
+                positions.append(pos)
+                print("   Carta em: (\(String(format: "%.2f", pos.x)), \(String(format: "%.2f", pos.y)), \(String(format: "%.2f", pos.z)))")
+            }
+        }
+        
+        guard positions.count >= 3 else {
+            hideTriangleMessage()
+            return
+        }
+        
+        var foundTriangle = false
+        for i in 0..<positions.count {
+            for j in (i+1)..<positions.count {
+                for k in (j+1)..<positions.count {
+                    if isValidTriangle(p1: positions[i], p2: positions[j], p3: positions[k]) {
+                        foundTriangle = true
+                        break
+                    }
+                }
+                if foundTriangle { break }
+            }
+            if foundTriangle { break }
+        }
+        
+        if foundTriangle && !triangleDetected {
+            showTriangleMessage()
+            triangleDetected = true
+        } else if !foundTriangle && triangleDetected {
+            hideTriangleMessage()
+            triangleDetected = false
+        }
+    }
+    
+    private func isValidTriangle(p1: simd_float3, p2: simd_float3, p3: simd_float3) -> Bool {
+        let d12 = simd_distance(p1, p2)
+        let d23 = simd_distance(p2, p3)
+        let d31 = simd_distance(p3, p1)
+        
+        print("   📏 Testando triângulo:")
+        print("      Lado 1-2: \(String(format: "%.2f", d12))m")
+        print("      Lado 2-3: \(String(format: "%.2f", d23))m")
+        print("      Lado 3-1: \(String(format: "%.2f", d31))m")
+        
+        let minDist: Float = 0.10
+        let maxDist: Float = 0.80
+        
+        guard d12 >= minDist && d12 <= maxDist,
+              d23 >= minDist && d23 <= maxDist,
+              d31 >= minDist && d31 <= maxDist else {
+            print("      ❌ Distâncias fora do range (0.10m - 0.80m)")
+            return false
+        }
+        
+        guard (d12 + d23) > d31,
+              (d23 + d31) > d12,
+              (d31 + d12) > d23 else {
+            return false
+        }
+        
+        let maxSide = max(d12, d23, d31)
+        let minSide = min(d12, d23, d31)
+        
+        guard (maxSide / minSide) < 3.0 else {
+            return false
+        }
+        
+        let s = (d12 + d23 + d31) / 2.0
+        let area = sqrt(s * (s - d12) * (s - d23) * (s - d31))
+        
+        guard area > 0.005 else {
+            return false
+        }
+        
+        print("🔺 TRIÂNGULO DETECTADO!")
+        print("   Lados: \(String(format: "%.2f", d12))m, \(String(format: "%.2f", d23))m, \(String(format: "%.2f", d31))m")
+        print("   Área: \(String(format: "%.4f", area))m²")
+        
+        return true
+    }
+    
+    private func showTriangleMessage() {
+        triangleLabel.text = "🔺 TRIÂNGULO FEITO!"
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: [], animations: {
+            self.triangleLabel.alpha = 1.0
+            self.triangleLabel.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        }) { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.triangleLabel.transform = .identity
+            }
+        }
+        
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+    }
+    
+    private func hideTriangleMessage() {
+        UIView.animate(withDuration: 0.3) {
+            self.triangleLabel.alpha = 0
+        }
     }
 }
 

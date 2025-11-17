@@ -1,0 +1,20 @@
+{
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "resources" : [
+    {
+      "filename" : "akul.arreferenceimage"
+    },
+    {
+      "filename" : "mimico.arreferenceimage"
+    },
+    {
+      "filename" : "radiation.arreferenceimage"
+    },
+    {
+      "filename" : "settlement.arreferenceimage"
+    }
+  ]
+}
