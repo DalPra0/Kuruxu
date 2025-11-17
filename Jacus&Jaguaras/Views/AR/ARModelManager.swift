@@ -6,10 +6,10 @@ class ARModelManager {
     func add3DModel(to node: SCNNode, cardName: String) {
         node.childNodes.forEach { $0.removeFromParentNode() }
         
-        guard let modelURL = Bundle.main.url(forResource: "estrela", withExtension: "usdz"),
+        guard let modelURL = Bundle.main.url(forResource: "star", withExtension: "usdz"),
               let modelScene = try? SCNScene(url: modelURL),
               let modelNode = modelScene.rootNode.childNodes.first else {
-            print("Erro ao carregar estrela.usdz")
+            print("Erro ao carregar star.usdz")
             return
         }
         
