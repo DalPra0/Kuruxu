@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8A2437AA2ECB800B00A86D4D /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8A2437A92ECB800B00A86D4D /* SnapKit */; };
-		8A2437AC2ECB800B00A86D4D /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 8A2437AB2ECB800B00A86D4D /* SnapKit-Dynamic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +28,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A2437AA2ECB800B00A86D4D /* SnapKit in Frameworks */,
-				8A2437AC2ECB800B00A86D4D /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +71,6 @@
 			name = "Jacus&Jaguaras";
 			packageProductDependencies = (
 				8A2437A92ECB800B00A86D4D /* SnapKit */,
-				8A2437AB2ECB800B00A86D4D /* SnapKit-Dynamic */,
 			);
 			productName = "Jacus&Jaguaras";
 			productReference = 15D6953D2EC22142005D8852 /* Jacus&Jaguaras.app */;
@@ -273,7 +270,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeLeft;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeLeft;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -311,7 +309,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeLeft;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeLeft;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -373,11 +372,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8A2437A82ECB800B00A86D4D /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		8A2437AB2ECB800B00A86D4D /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8A2437A82ECB800B00A86D4D /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

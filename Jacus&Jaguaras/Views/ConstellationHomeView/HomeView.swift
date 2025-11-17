@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @State var currentIndex = 0
     @State var activeCard: CardModel?
-    let dataModel = DataModel()
+//    let dataModel = DataModel()
     var body: some View {
         
         HStack{
@@ -29,27 +29,27 @@ struct HomeView: View {
             }
             
             HStack{
-                NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex])) {
-                    AccordionView(card: dataModel.cardsList[currentIndex])
-                }
-                NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex + 1])){
-                    AccordionView(card: dataModel.cardsList[currentIndex + 1])
-                }
+//                NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex])) {
+//                    AccordionView(card: dataModel.cardsList[currentIndex])
+//                }
+//                NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex + 1])){
+//                    AccordionView(card: dataModel.cardsList[currentIndex + 1])
+//                }
             }
             .transition(.move(edge: .leading))
             .animation(.easeInOut(duration: 0.5), value: currentIndex)
             
             // MARK: PROXIMO
-            if currentIndex < dataModel.cardsList.count - 2 {
-                Button {
-                    currentIndex += 2
-                } label: {
-                    Image(systemName: "chevron.right")
-                }
-            } else {
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(.gray)
-            }
+//            if currentIndex < dataModel.cardsList.count - 2 {
+//                Button {
+//                    currentIndex += 2
+//                } label: {
+//                    Image(systemName: "chevron.right")
+//                }
+//            } else {
+//                Image(systemName: "chevron.right")
+//                    .foregroundStyle(.gray)
+//            }
             
         }
     }

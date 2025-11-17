@@ -11,10 +11,11 @@ import SnapKit
 class ConstellationView: UIView {
     
     var onClicked: (() -> Void)?
+    let screen = UIScreen.main.bounds
     
     private(set) lazy var star01: UIButton = {
         let star = UIButton()
-        star.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        star.frame = CGRect(x: screen.width*0.3, y: 0, width: 60, height: 60)
         star.backgroundColor = .red
         let action = UIAction { _ in
             self.onClicked}
