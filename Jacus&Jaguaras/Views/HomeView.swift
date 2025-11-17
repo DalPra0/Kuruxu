@@ -29,10 +29,16 @@ struct HomeView: View {
             }
             
             HStack{
-                NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex])) {
+//                NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex])) {
+//                    AccordionView(card: dataModel.cardsList[currentIndex])
+//                }
+//                NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex + 1])){
+//                    AccordionView(card: dataModel.cardsList[currentIndex + 1])
+//                }
+                NavigationLink(destination: CameraView()) {
                     AccordionView(card: dataModel.cardsList[currentIndex])
                 }
-                NavigationLink(destination: EndingView(card: dataModel.cardsList[currentIndex + 1])){
+                NavigationLink(destination: CameraView()){
                     AccordionView(card: dataModel.cardsList[currentIndex + 1])
                 }
             }
@@ -56,6 +62,6 @@ struct HomeView: View {
     
 }
 
-#Preview(traits: .landscapeLeft) {
+#Preview() {
     HomeView()
 }

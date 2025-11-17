@@ -31,9 +31,9 @@ struct AccordionView: View{
     }
 }
 
-#Preview(traits: .landscapeRight) {
+#Preview() {
     AccordionView(card:         CardModel(
-        imageName: "star",
+        imageName: "star01",
         title: "Anta do Norte",
         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     ))

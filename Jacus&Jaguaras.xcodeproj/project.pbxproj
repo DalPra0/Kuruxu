@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		158993B92ECBAAB900523488 /* Exceptions for "Jacus&Jaguaras" folder in "Jacus&Jaguaras" target */ = {
+		E37028332ECBA1F3000B0C7F /* Exceptions for "Jacus&Jaguaras" folder in "Jacus&Jaguaras" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Jacus-Jaguaras-Info.plist",
@@ -24,7 +24,7 @@
 		15D6953F2EC22142005D8852 /* Jacus&Jaguaras */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				158993B92ECBAAB900523488 /* Exceptions for "Jacus&Jaguaras" folder in "Jacus&Jaguaras" target */,
+				E37028332ECBA1F3000B0C7F /* Exceptions for "Jacus&Jaguaras" folder in "Jacus&Jaguaras" target */,
 			);
 			path = "Jacus&Jaguaras";
 			sourceTree = "<group>";
@@ -266,17 +266,18 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 982D3NRR89;
+				DEVELOPMENT_TEAM = 5NY3VD7H6T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Jacus-Jaguaras-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Kuruxu;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.educational-games";
-				INFOPLIST_KEY_NSCameraUsageDescription = "libera a camera ai";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Este app requer o uso da câmera para a identificação das cartas.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeLeft;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeLeft;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -306,17 +307,18 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 982D3NRR89;
+				DEVELOPMENT_TEAM = 5NY3VD7H6T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Jacus-Jaguaras-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Kuruxu;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.educational-games";
-				INFOPLIST_KEY_NSCameraUsageDescription = "libera a camera ai";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Este app requer o uso da câmera para a identificação das cartas.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeLeft;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeLeft;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

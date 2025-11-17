@@ -40,6 +40,6 @@ struct StartView: View {
     }
 }
 
-#Preview(traits: .landscapeLeft) {
+#Preview() {
     StartView()
 }
