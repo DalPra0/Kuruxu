@@ -4,7 +4,7 @@ import SwiftUI
 struct Jacus_JaguarasApp: App {
     var body: some Scene {
         WindowGroup {
-            ARTestView()
+            ContentView()
                 .ignoresSafeArea()
         }
     }
