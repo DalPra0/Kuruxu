@@ -40,7 +40,6 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         sceneView.autoenablesDefaultLighting = true
         sceneView.automaticallyUpdatesLighting = true
-        sceneView.showsStatistics = true
         
         sessionManager.sceneView = sceneView
     }
@@ -139,10 +138,8 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     private func updateUI() {
         let count = detectedCards.count
         let total = sessionManager.totalCardsAvailable
-        let cardNames = Array(detectedCards.keys)
         
         uiManager.updateCounter(count: count, total: total)
-        uiManager.updateDebugInfo(count: count, total: total, cardNames: cardNames)
     }
     
     private func showAlert(message: String) {

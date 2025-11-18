@@ -2,7 +2,6 @@ import UIKit
 
 class ARUIManager {
     private var counterLabel: UILabel!
-    private var debugLabel: UILabel!
     private var triangleLabel: UILabel!
     
     var onCloseTapped: (() -> Void)?
@@ -32,19 +31,6 @@ class ARUIManager {
         counterLabel.frame = CGRect(x: 20, y: 50, width: 200, height: 50)
         counterLabel.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin]
         view.addSubview(counterLabel)
-        
-        debugLabel = UILabel()
-        debugLabel.text = "Aguardando cartas..."
-        debugLabel.textColor = .white
-        debugLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        debugLabel.textAlignment = .left
-        debugLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        debugLabel.numberOfLines = 0
-        debugLabel.layer.cornerRadius = 10
-        debugLabel.clipsToBounds = true
-        debugLabel.frame = CGRect(x: 20, y: 120, width: view.bounds.width - 40, height: 150)
-        debugLabel.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin, .flexibleWidth]
-        view.addSubview(debugLabel)
         
         triangleLabel = UILabel()
         triangleLabel.text = ""
@@ -103,29 +89,6 @@ class ARUIManager {
                 self.counterLabel.transform = .identity
             }
         }
-    }
-    
-    func updateDebugInfo(count: Int, total: Int, cardNames: [String]) {
-        var debugText = "DEBUG\n"
-        debugText += "Detectadas: \(count)"
-        if total > 0 {
-            debugText += "/\(total)\n\n"
-        } else {
-            debugText += "\n\n"
-        }
-        
-        if count > 0 {
-            let sortedCards = cardNames.sorted()
-            for cardName in sortedCards {
-                debugText += "- \(cardName)\n"
-            }
-        } else {
-            debugText += "Coloque cartas na mesa\n"
-            debugText += "Mantenha espacamento\n"
-            debugText += "Boa iluminacao\n"
-        }
-        
-        debugLabel.text = debugText
     }
     
     func showConstellationMessage(name: String) {
