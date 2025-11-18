@@ -18,17 +18,19 @@ struct ConstellationView: View {
                 
                 // MARK: ANTA
                 HStack{
-                    StarView(card: CardModel(
-                        imageName: "star01",
-                        icon: "anta",
-                        title: "Anta do Norte",
-                        text: "A constelação da Anta do Norte representa o espírito guardião das águas, que guia os rios e protege as florestas sob o brilho da Via Láctea.",
-                        isActive: true,
-                        colorStroke: .purple500,
-                        colorCircle: .purple700,
-                        colorIcon: .white
-                    ),
-                             isActive: true)
+                    NavigationLink(destination: CameraView()){
+                        StarView(card: CardModel(
+                            imageName: "star01",
+                            icon: "anta",
+                            title: "Anta do Norte",
+                            text: "A constelação da Anta do Norte representa o espírito guardião das águas, que guia os rios e protege as florestas sob o brilho da Via Láctea.",
+                            isActive: true,
+                            colorStroke: .purple500,
+                            colorCircle: .purple700,
+                            colorIcon: .white
+                        ),
+                                 isActive: true)
+                    }
                     Spacer()
                 }
                 
@@ -87,14 +89,17 @@ struct ConstellationView: View {
             .padding(.horizontal, 34)
         }
         .background(
-            Circle()
-            .fill(
-                RadialGradient(gradient: Gradient(colors: [.primary600, .primary900]), center: .center, startRadius: 10, endRadius: 300)
+            EllipticalGradient(
+            stops: [
+                Gradient.Stop(color: .primary600, location: 0.00),
+            Gradient.Stop(color: .primary900, location: 1.00),
+            ],
+            center: UnitPoint(x: 0.53, y: 0.5)
             )
-            
-            .frame(width: 1000, height: 1000)
         )
+
         .navigationBarBackButtonHidden(true)
+
     }
 }
 
