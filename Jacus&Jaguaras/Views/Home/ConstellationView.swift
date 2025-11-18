@@ -94,6 +94,7 @@ struct ConstellationView: View {
             
             .frame(width: 1000, height: 1000)
         )
+        .navigationBarBackButtonHidden(true)
     }
 }
 
