@@ -22,6 +22,7 @@ struct CameraView: View {
                    .background(.black.opacity(0.7))
            }
        }
+       .navigationBarBackButtonHidden(true)
     }
 }
 

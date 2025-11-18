@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct StartView: View {
+    let screenSize = UIScreen.main.bounds
+    //screensize width = 393
+    //screensize height = 852
+    //aspectratio
     
     var body: some View {
         
@@ -24,14 +28,14 @@ struct StartView: View {
                 Image("logo")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 202.09, height: 203.05)
+                    .frame(width: screenSize.width * 0.5, height: screenSize.height * 0.24)
                 
                 Spacer()
-                    .frame(height: 150)
+                    .frame(height: screenSize.height * 0.1)
                 
                 NavigationLink(destination: ConstellationView()){
                     ButtonView(primaryColor: .secondary200, secondaryColor: .secondary400, cornerRadius: 16)
-                    .frame(width: 275, height: 49)
+                        .frame(width: screenSize.width * 0.7, height: screenSize.height * 0.06)
                     .overlay{
                         HStack{                            Text("COMEÇAR AGORA")
                             Image(systemName: "chevron.right")
@@ -44,12 +48,13 @@ struct StartView: View {
             }
         }
         .background(
-            Circle()
-            .fill(
-                RadialGradient(gradient: Gradient(colors: [.primary600, .primary900]), center: .center, startRadius: 10, endRadius: 300)
+            EllipticalGradient(
+            stops: [
+                Gradient.Stop(color: .primary600, location: 0.00),
+            Gradient.Stop(color: .primary900, location: 1.00),
+            ],
+            center: UnitPoint(x: 0.53, y: 0.5)
             )
-            
-            .frame(width: 1000, height: 1000)
         )
     }
 }

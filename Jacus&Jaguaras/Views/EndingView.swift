@@ -58,6 +58,7 @@ struct EndingView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea()
         .background(.black)
+        .navigationBarBackButtonHidden(true)
     }
 }
 
