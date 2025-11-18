@@ -8,6 +8,7 @@ class ARConstellationLineRenderer {
     private var isConstellationActive = false
     private var currentPattern: ConstellationPattern?
     private weak var currentSceneView: ARSCNView?
+    var feedbackManager: ARFeedbackManager?
     
     func addMarker(for cardName: String, at position: simd_float3, in sceneView: ARSCNView) {
         currentSceneView = sceneView
@@ -23,6 +24,7 @@ class ARConstellationLineRenderer {
             
             if distance > 0.05 {
                 print("      Marcador atualizado para: \(cardName) (moveu \(String(format: "%.2f", distance))m)")
+                feedbackManager?.markerMoved()
                 let moveAction = SCNAction.move(to: newPos, duration: 0.3)
                 existingMarker.runAction(moveAction)
                 
@@ -54,6 +56,7 @@ class ARConstellationLineRenderer {
         sceneView.scene.rootNode.addChildNode(markerNode)
         markerNodes[cardName] = markerNode
         
+        feedbackManager?.markerCreated()
         print("      Marcador criado para: \(cardName)")
     }
     

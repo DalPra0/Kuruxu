@@ -11,6 +11,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     private let modelManager = ARModelManager()
     private let constellationDetector = ARConstellationDetector()
     private let lineRenderer = ARConstellationLineRenderer()
+    private let feedbackManager = ARFeedbackManager()
     private let uiManager = ARUIManager()
     
     override func viewDidLoad() {
@@ -18,6 +19,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         setupARScene()
         setupUI()
         setupConstellationDetector()
+        lineRenderer.feedbackManager = feedbackManager
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,12 +54,14 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     private func setupConstellationDetector() {
         constellationDetector.onConstellationDetected = { [weak self] constellationName, pattern, cardPositions in
             guard let self = self else { return }
+            self.feedbackManager.constellationDetected()
             self.uiManager.showConstellationMessage(name: constellationName)
             self.lineRenderer.drawConstellation(pattern: pattern, cardPositions: cardPositions, in: self.sceneView)
         }
 
         constellationDetector.onConstellationLost = { [weak self] in
             guard let self = self else { return }
+            self.feedbackManager.constellationLost()
             self.lineRenderer.clearAll(from: self.sceneView)
             self.uiManager.hideConstellationMessage()
         }
@@ -108,6 +112,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         print("   Total: \(detectedCards.count)/\(sessionManager.totalCardsAvailable)")
         
         DispatchQueue.main.async {
+            self.feedbackManager.cardDetected()
             self.lineRenderer.addMarker(for: cardName, at: position, in: self.sceneView)
             self.updateUI()
             self.modelManager.add3DModel(to: node, cardName: cardName)
@@ -125,6 +130,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         print("   Total: \(detectedCards.count)/\(sessionManager.totalCardsAvailable)")
         
         DispatchQueue.main.async {
+            self.feedbackManager.cardRemoved()
             self.updateUI()
             self.constellationDetector.checkForConstellation(detectedCards: self.detectedCards)
         }
