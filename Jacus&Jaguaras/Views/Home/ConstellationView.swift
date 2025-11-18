@@ -76,7 +76,7 @@ struct ConstellationView: View {
                         text: "A constelação do Cervo representa a força e a leveza da natureza, guiando os caçadores e ensinando o equilíbrio entre respeito e sobrevivência.",
                         isActive: false,
                         colorStroke: .secondary400,
-                        colorCircle: .secondary1001,
+                        colorCircle: .secondary100,
                         colorIcon: .secondary400
                     ),
                              isActive: false)
