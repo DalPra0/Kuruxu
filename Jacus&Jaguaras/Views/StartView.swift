@@ -21,7 +21,7 @@ struct StartView: View {
                     .scaledToFit()
                     .frame(width: 297, height: 125)
                 
-                NavigationLink(destination: HomeView()){
+                NavigationLink(destination: ConstellationView()){
                     RoundedRectangle(cornerRadius: 64)
                         .fill(Color(uiColor: .secondary400))
                         .frame(width: 244, height: 49)

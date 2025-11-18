@@ -10,22 +10,9 @@
 		15D6953D2EC22142005D8852 /* Jacus&Jaguaras.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jacus&Jaguaras.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		E37028332ECBA1F3000B0C7F /* Exceptions for "Jacus&Jaguaras" folder in "Jacus&Jaguaras" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Jacus-Jaguaras-Info.plist",
-			);
-			target = 15D6953C2EC22142005D8852 /* Jacus&Jaguaras */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		15D6953F2EC22142005D8852 /* Jacus&Jaguaras */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				E37028332ECBA1F3000B0C7F /* Exceptions for "Jacus&Jaguaras" folder in "Jacus&Jaguaras" target */,
-			);
 			path = "Jacus&Jaguaras";
 			sourceTree = "<group>";
 		};
@@ -266,7 +253,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 5NY3VD7H6T;
+				DEVELOPMENT_TEAM = KC7GZAZC23;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Jacus-Jaguaras-Info.plist";
@@ -296,7 +283,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -307,7 +294,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 5NY3VD7H6T;
+				DEVELOPMENT_TEAM = KC7GZAZC23;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Jacus-Jaguaras-Info.plist";
@@ -337,7 +324,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
