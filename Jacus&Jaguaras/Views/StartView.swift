@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct StartView: View {
+    
     var body: some View {
+        
         ZStack{
-            
             Image("starBackground")
                 .resizable()
                 .scaledToFill()
@@ -19,18 +20,19 @@ struct StartView: View {
                 Image("logo")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 297, height: 125)
+                    .frame(width: 202.09, height: 203.05)
                 
                 NavigationLink(destination: HomeView()){
-                    RoundedRectangle(cornerRadius: 64)
-                        .fill(Color(uiColor: .secondary400))
-                        .frame(width: 244, height: 49)
-                        .overlay{
-                            Text("Começar")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.primary600)
+                    ButtonView(primaryColor: .secondary200, secondaryColor: .secondary400, cornerRadius: 16)
+                    .frame(width: 275, height: 49)
+                    .overlay{
+                        HStack{                            Text("COMEÇAR AGORA")
+                            Image(systemName: "chevron.right")
                         }
+                        .font(.system(size: 14))
+                        .fontWeight(.heavy)
+                        .foregroundStyle(.neutral800)
+                    }
                 }
             }
         }
