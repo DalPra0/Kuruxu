@@ -44,7 +44,12 @@ struct StartView: View {
             }
         }
         .background(
-            LinearGradient(gradient: Gradient(colors: [.primary900, .primary600]), startPoint: .top, endPoint: .bottom)
+            Circle()
+            .fill(
+                RadialGradient(gradient: Gradient(colors: [.primary600, .primary900]), center: .center, startRadius: 10, endRadius: 300)
+            )
+            
+            .frame(width: 1000, height: 1000)
         )
     }
 }
