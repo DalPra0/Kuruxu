@@ -37,7 +37,7 @@ struct ConstellationPattern {
 
 class ARConstellationDetector {
     private(set) var constellationDetected: Bool = false
-    var onConstellationDetected: ((String) -> Void)?
+    var onConstellationDetected: ((String, ConstellationPattern, [String: simd_float3]) -> Void)?
     var onConstellationLost: (() -> Void)?
 
     private let patterns: [ConstellationPattern] = [
@@ -63,7 +63,7 @@ class ARConstellationDetector {
             if let matchedConstellation = tryMatchPattern(pattern, with: cardPositions) {
                 if !constellationDetected {
                     print("CONSTELAÇÃO DETECTADA: \(matchedConstellation)")
-                    onConstellationDetected?(matchedConstellation)
+                    onConstellationDetected?(matchedConstellation, pattern, cardPositions)
                     constellationDetected = true
                 }
                 return

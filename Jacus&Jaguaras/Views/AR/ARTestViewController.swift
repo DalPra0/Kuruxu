@@ -10,6 +10,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     private let sessionManager = ARSessionManager()
     private let modelManager = ARModelManager()
     private let constellationDetector = ARConstellationDetector()
+    private let lineRenderer = ARConstellationLineRenderer()
     private let uiManager = ARUIManager()
     
     override func viewDidLoad() {
@@ -49,12 +50,16 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     }
     
     private func setupConstellationDetector() {
-        constellationDetector.onConstellationDetected = { [weak self] constellationName in
-            self?.uiManager.showConstellationMessage(name: constellationName)
+        constellationDetector.onConstellationDetected = { [weak self] constellationName, pattern, cardPositions in
+            guard let self = self else { return }
+            self.uiManager.showConstellationMessage(name: constellationName)
+            self.lineRenderer.drawConstellation(pattern: pattern, cardPositions: cardPositions, in: self.sceneView)
         }
 
         constellationDetector.onConstellationLost = { [weak self] in
-            self?.uiManager.hideConstellationMessage()
+            guard let self = self else { return }
+            self.lineRenderer.clearAll(from: self.sceneView)
+            self.uiManager.hideConstellationMessage()
         }
     }
     
@@ -103,6 +108,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         print("   Total: \(detectedCards.count)/\(sessionManager.totalCardsAvailable)")
         
         DispatchQueue.main.async {
+            self.lineRenderer.addMarker(for: cardName, at: position, in: self.sceneView)
             self.updateUI()
             self.modelManager.add3DModel(to: node, cardName: cardName)
             self.constellationDetector.checkForConstellation(detectedCards: self.detectedCards)
