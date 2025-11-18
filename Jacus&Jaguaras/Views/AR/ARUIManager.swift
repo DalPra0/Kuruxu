@@ -3,8 +3,10 @@ import UIKit
 class ARUIManager {
     private var counterLabel: UILabel!
     private var triangleLabel: UILabel!
+    private var photoButton: UIButton!
     
     var onCloseTapped: (() -> Void)?
+    var onPhotoTapped: (() -> Void)?
     
     func setupUI(in view: UIView, closeAction: @escaping () -> Void) {
         self.onCloseTapped = closeAction
@@ -47,10 +49,28 @@ class ARUIManager {
                                      height: 100)
         triangleLabel.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
         view.addSubview(triangleLabel)
+        
+        photoButton = UIButton(type: .system)
+        photoButton.setTitle("📸", for: .normal)
+        photoButton.titleLabel?.font = UIFont.systemFont(ofSize: 40)
+        photoButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.9)
+        photoButton.layer.cornerRadius = 35
+        photoButton.alpha = 0
+        photoButton.frame = CGRect(x: (view.bounds.width - 70) / 2,
+                                   y: view.bounds.height - 120,
+                                   width: 70,
+                                   height: 70)
+        photoButton.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin]
+        photoButton.addTarget(self, action: #selector(photoTapped), for: .touchUpInside)
+        view.addSubview(photoButton)
     }
     
     @objc private func closeTapped() {
         onCloseTapped?()
+    }
+    
+    @objc private func photoTapped() {
+        onPhotoTapped?()
     }
     
     func updateCounter(count: Int, total: Int) {
@@ -102,6 +122,15 @@ class ARUIManager {
                 self.triangleLabel.transform = .identity
             }
         }
+        
+        UIView.animate(withDuration: 0.5, delay: 0.3, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: [], animations: {
+            self.photoButton.alpha = 1.0
+            self.photoButton.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        }) { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.photoButton.transform = .identity
+            }
+        }
 
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
@@ -110,6 +139,7 @@ class ARUIManager {
     func hideConstellationMessage() {
         UIView.animate(withDuration: 0.3) {
             self.triangleLabel.alpha = 0
+            self.photoButton.alpha = 0
         }
     }
 }

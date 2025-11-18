@@ -48,6 +48,10 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         uiManager.setupUI(in: view) { [weak self] in
             self?.dismiss(animated: true)
         }
+        
+        uiManager.onPhotoTapped = { [weak self] in
+            self?.takePhoto()
+        }
     }
     
     private func setupConstellationDetector() {
@@ -146,5 +150,35 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+    
+    private func takePhoto() {
+        let snapshot = sceneView.snapshot()
+        savePhoto(snapshot)
+        
+        feedbackManager.markerCreated()
+        
+        let alert = UIAlertController(title: "📸 Foto Salva!", message: "A constelação foi capturada!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
+    private func savePhoto(_ image: UIImage) {
+        guard let data = image.jpegData(compressionQuality: 0.9) else { return }
+        
+        let fileManager = FileManager.default
+        guard let documentsPath = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        
+        let timestamp = Date().timeIntervalSince1970
+        let fileName = "constellation_\(Int(timestamp)).jpg"
+        let fileURL = documentsPath.appendingPathComponent(fileName)
+        
+        do {
+            try data.write(to: fileURL)
+            print("📸 Foto salva: \(fileName)")
+            print("   Local: \(fileURL.path)")
+        } catch {
+            print("❌ Erro ao salvar foto: \(error)")
+        }
     }
 }

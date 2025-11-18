@@ -12,7 +12,7 @@ class ARConstellationLineRenderer {
     
     func addMarker(for cardName: String, at position: simd_float3, in sceneView: ARSCNView) {
         currentSceneView = sceneView
-        
+
         if let existingMarker = markerNodes[cardName] {
             let oldPos = existingMarker.position
             let newPos = SCNVector3(position.x, position.y, position.z)
