@@ -53,6 +53,14 @@ class ARConstellationLineRenderer {
         ])
         markerNode.runAction(SCNAction.repeatForever(pulseAction))
         
+        if let starScene = SCNScene(named: "estrela.usdz") {
+            if let starNode = starScene.rootNode.childNodes.first {
+                starNode.position = SCNVector3(0, 0.03, 0)
+                starNode.scale = SCNVector3(0.003, 0.003, 0.003)
+                markerNode.addChildNode(starNode)
+            }
+        }
+        
         sceneView.scene.rootNode.addChildNode(markerNode)
         markerNodes[cardName] = markerNode
         
