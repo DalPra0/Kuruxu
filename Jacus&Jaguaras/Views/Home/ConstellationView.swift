@@ -98,6 +98,8 @@ struct ConstellationView: View {
             )
         )
 
+        .navigationBarBackButtonHidden(true)
+
     }
 }
 
