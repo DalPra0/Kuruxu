@@ -35,7 +35,7 @@ struct EndingView: View {
                     .frame(maxWidth: 267, maxHeight: 169)
                     .multilineTextAlignment(.leading)
                 
-                NavigationLink(destination: HomeView()){
+                NavigationLink(destination: ConstellationView()){
                     Text("Voltar a tela inicial")
                         .foregroundStyle(.white)
                         .font(.system(size: 16, weight: .semibold))
@@ -62,10 +62,14 @@ struct EndingView: View {
 }
 
 #Preview() {
-    EndingView(card:
-        CardModel(
-        imageName: "star",
-        title: "Anta do Norte",
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    ))
+    EndingView(card: CardModel(
+                    imageName: "star01",
+                    icon: "anta",
+                    title: "Anta do Norte",
+                    text: "A constelação da Anta do Norte representa o espírito guardião das águas, que guia os rios e protege as florestas sob o brilho da Via Láctea.",
+                    isActive: true,
+                    colorStroke: .purple500,
+                    colorCircle: .purple700,
+                    colorIcon: .white
+                ))
 }
