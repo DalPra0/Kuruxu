@@ -154,7 +154,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     
     private func takePhoto() {
         let snapshot = sceneView.snapshot()
-        savePhoto(snapshot)
+        SavedPhotosManager.shared.savePhoto(snapshot)
         
         feedbackManager.markerCreated()
         
@@ -162,8 +162,39 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
+}
+
+final class SavedPhotosManager {
+    private init() { }
     
-    private func savePhoto(_ image: UIImage) {
+    static let shared = SavedPhotosManager()
+    
+    func getPhotos() -> [Data] {
+        guard let documentsPath = FileManager.default.urls(
+            for: .documentDirectory,
+            in: .userDomainMask
+        ).first else { return [] }
+        
+        do {
+            let files = try FileManager.default.contentsOfDirectory(
+                at: documentsPath,
+                includingPropertiesForKeys: nil
+            )
+            
+            let images = files.filter { url in
+                url.absoluteString.contains("constellation_")
+            }
+            
+            return images.map { imageUrl in
+                FileManager.default.contents(atPath: imageUrl.path)!
+            }
+            
+        } catch {
+            return []
+        }
+    }
+    
+    func savePhoto(_ image: UIImage) {
         guard let data = image.jpegData(compressionQuality: 0.9) else { return }
         
         let fileManager = FileManager.default
