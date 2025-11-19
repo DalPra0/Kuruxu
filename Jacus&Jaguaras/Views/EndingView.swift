@@ -35,7 +35,16 @@ struct EndingView: View {
                     .frame(maxWidth: 267, maxHeight: 169)
                     .multilineTextAlignment(.leading)
                 
-                NavigationLink(destination: ConstellationView()){
+                NavigationLink(destination: ConstellationView(card: CardModel(
+                    imageName: "star03",
+                    icon: "lock.fill",
+                    title: "Homem Velho",
+                    text: "A constelação do Homem Velho retrata o sábio ancestral que observa o céu, lembrando os povos de honrar o tempo, a memória e o ciclo da vida.",
+                    isActive: false,
+                    colorStroke: .primary600,
+                    colorCircle: .primary400,
+                    colorIcon: .primary600
+                ))){
                     Text("Voltar a tela inicial")
                         .foregroundStyle(.white)
                         .font(.system(size: 16, weight: .semibold))

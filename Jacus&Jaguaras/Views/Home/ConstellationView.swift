@@ -8,27 +8,44 @@
 import SwiftUI
 
 struct ConstellationView: View {
+    let screenSize = UIScreen.main.bounds
+    let dataModel = DataModel()
+    let card: CardModel
+    @State var currentIndex = 0
+    @State private var visible = false
+    
+    
+    //screensize width = 393
+    //screensize height = 852
+    
     var body: some View {
         ZStack{
-            Image("starBackground")
-                .resizable()
-                .scaledToFill()
+            StarBackground()
             
             VStack{
+                ButtonView(primaryColor: dataModel.cardsList[currentIndex].colorStroke, secondaryColor: dataModel.cardsList[currentIndex].colorCircle, cornerRadius: 16)
+                    .frame(width: screenSize.width * 0.85, height: screenSize.height * 0.1)
+                    .overlay{
+                        VStack(alignment: .leading, spacing: 8){
+                            Text("CONSTELAÇÃO 0" + "\(currentIndex + 1), " + dataModel.cardsList[currentIndex].title)
+                                .textCase(.uppercase)
+                                .font(.system(size: 14))
+                                .fontWeight(.heavy)
+                            Text("Clique no ícone para montar\na constelação!")
+                                .font(.system(size: 15))
+                                .fontWeight(.medium)
+                        }
+                        .padding(.vertical, 12)
+                        .foregroundStyle(.white)
+                    }
+                    .padding(.bottom, 48)
+                    .opacity(visible ? 1 : 0)
+                    .animation(.easeInOut(duration: 4.0), value: visible)
                 
                 // MARK: ANTA
                 HStack{
                     NavigationLink(destination: CameraView()){
-                        StarView(card: CardModel(
-                            imageName: "star01",
-                            icon: "anta",
-                            title: "Anta do Norte",
-                            text: "A constelação da Anta do Norte representa o espírito guardião das águas, que guia os rios e protege as florestas sob o brilho da Via Láctea.",
-                            isActive: true,
-                            colorStroke: .purple500,
-                            colorCircle: .purple700,
-                            colorIcon: .white
-                        ),
+                        StarView(card: dataModel.cardsList[currentIndex],
                                  isActive: true)
                     }
                     Spacer()
@@ -37,72 +54,59 @@ struct ConstellationView: View {
                 // MARK: CONSTELLATION 02
                 HStack{
                     Spacer()
-                    StarView(card: CardModel(
-                        imageName: "star02",
-                        icon: "lock.fill",
-                        title: "Ema",
-                        text: "A constelação da Ema simboliza a grande ave que corre pelos céus, marcando o início do tempo da colheita e ensinando sobre coragem e renovação.",
-                        isActive: false,
-                        colorStroke: .orange400,
-                        colorCircle: .orange200,
-                        colorIcon: .orange400
-                    ),
+                    StarView(card: dataModel.cardsList[currentIndex + 1],
                              isActive: false)
                 }
                 .offset(x: 0, y: -20)
                 
                 // MARK: CONSTELLATION 03
                 HStack{
-                    StarView(card: CardModel(
-                        imageName: "star03",
-                        icon: "lock.fill",
-                        title: "Homem Velho",
-                        text: "A constelação do Homem Velho retrata o sábio ancestral que observa o céu, lembrando os povos de honrar o tempo, a memória e o ciclo da vida.",
-                        isActive: false,
-                        colorStroke: .primary600,
-                        colorCircle: .primary400,
-                        colorIcon: .primary600
-                    ),
+                    StarView(card: dataModel.cardsList[currentIndex + 2],
                              isActive: false)
                     Spacer()
                 }
-                .offset(x: 0, y: -20)
+                .offset(x: 0, y: -40)
                 
                 // MARK: CONSTELLATION 04
                 HStack{
                     Spacer()
-                    StarView(card: CardModel(
-                        imageName: "star04",
-                        icon: "lock.fill",
-                        title: "Cervo",
-                        text: "A constelação do Cervo representa a força e a leveza da natureza, guiando os caçadores e ensinando o equilíbrio entre respeito e sobrevivência.",
-                        isActive: false,
-                        colorStroke: .secondary400,
-                        colorCircle: .secondary100,
-                        colorIcon: .secondary400
-                    ),
+                    StarView(card: dataModel.cardsList[currentIndex + 3],
                              isActive: false)
                 }
-                .offset(x: 0, y: -20)
+                .offset(x: 0, y: -60)
                 
             }
             .padding(.horizontal, 34)
         }
+        .onAppear {
+            DispatchQueue.main.async {
+                visible = true
+            }
+        }
         .background(
             EllipticalGradient(
-            stops: [
-                Gradient.Stop(color: .primary600, location: 0.00),
-            Gradient.Stop(color: .primary900, location: 1.00),
-            ],
-            center: UnitPoint(x: 0.53, y: 0.5)
+                stops: [
+                    Gradient.Stop(color: .primary600, location: 0.00),
+                    Gradient.Stop(color: .primary900, location: 1.00),
+                ],
+                center: UnitPoint(x: 0.53, y: 0.5)
             )
         )
-
+        
         .navigationBarBackButtonHidden(true)
-
+        
     }
 }
 
 #Preview {
-    ConstellationView()
+    ConstellationView(card: CardModel(
+        imageName: "star03",
+        icon: "lock.fill",
+        title: "Homem Velho",
+        text: "A constelação do Homem Velho retrata o sábio ancestral que observa o céu, lembrando os povos de honrar o tempo, a memória e o ciclo da vida.",
+        isActive: false,
+        colorStroke: .primary600,
+        colorCircle: .primary400,
+        colorIcon: .primary600
+    ))
 }
