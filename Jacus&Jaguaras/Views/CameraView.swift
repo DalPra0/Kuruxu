@@ -6,21 +6,24 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct CameraView: View {
     @EnvironmentObject var data: DataModel
     let dataModel = DataModel()
     
+    @State var tips = TipGroup(.ordered) {
+        tip1()
+        tip2()
+    }
+    
     var body: some View {
-       ZStack{
+        ZStack(alignment: .top){
            ARTestView()
-           NavigationLink(destination: EndingView(card: dataModel.cardsList[0]).environmentObject(data)){
-               Text("OK")
-                   .font(.title)
-                   .foregroundStyle(.white)
-                   .padding()
-                   .background(.black.opacity(0.7))
-           }
+           TipView(tips.currentTip)
+                .padding()
+                .tipBackground(.primary900)
+                .tint(.white)
        }
        .navigationBarBackButtonHidden(true)
     }
