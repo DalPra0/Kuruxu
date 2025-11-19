@@ -10,7 +10,7 @@ import SwiftUI
 struct EndingView: View {
     
     let card: CardModel
-    
+    @EnvironmentObject var dataModel: DataModel
     var imageName: String = ""
     
     var body: some View {
@@ -35,16 +35,9 @@ struct EndingView: View {
                     .frame(maxWidth: 267, maxHeight: 169)
                     .multilineTextAlignment(.leading)
                 
-                NavigationLink(destination: ConstellationView(card: CardModel(
-                    imageName: "star03",
-                    icon: "lock.fill",
-                    title: "Homem Velho",
-                    text: "A constelação do Homem Velho retrata o sábio ancestral que observa o céu, lembrando os povos de honrar o tempo, a memória e o ciclo da vida.",
-                    isActive: false,
-                    colorStroke: .primary600,
-                    colorCircle: .primary400,
-                    colorIcon: .primary600
-                ))){
+                NavigationLink(destination: ConstellationView(card: dataModel.cardsList[0])
+                    .environmentObject(dataModel)
+                ){
                     Text("Voltar a tela inicial")
                         .foregroundStyle(.white)
                         .font(.system(size: 16, weight: .semibold))
@@ -53,6 +46,9 @@ struct EndingView: View {
                         .background(.gray.opacity(0.4))
                         .cornerRadius(18)
                 }
+                .simultaneousGesture(TapGesture().onEnded {
+                                    dataModel.unlockNext(currentCard: card)
+                                })
             }
             .padding(.horizontal, 32)
             .frame(width: 393)

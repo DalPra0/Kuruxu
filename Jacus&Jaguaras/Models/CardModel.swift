@@ -7,9 +7,10 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
-struct DataModel{
-    let cardsList: [CardModel] = [
+class DataModel: ObservableObject {
+    @Published var cardsList: [CardModel] = [
         CardModel(
             imageName: "star01",
             icon: "anta",
@@ -51,6 +52,19 @@ struct DataModel{
             colorIcon: .secondary400
         ),
     ]
+    
+    func unlockNext(currentCard: CardModel) {
+        if let currentIndex = cardsList.firstIndex(where: { $0.id == currentCard.id }),
+           currentIndex + 1 < cardsList.count {
+            
+            // 1. Encontra o índice da próxima constelação
+            let nextIndex = currentIndex + 1
+            
+            // 2. Modifica o valor isActive da próxima constelação para true
+            cardsList[nextIndex].isActive = true
+            cardsList[nextIndex].icon = "star01" // Opcional: muda o ícone
+        }
+    }
 }
 
 

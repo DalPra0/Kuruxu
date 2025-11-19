@@ -13,7 +13,7 @@ struct ConstellationView: View {
     let card: CardModel
     @State var currentIndex = 0
     @State private var visible = false
-    
+    @EnvironmentObject var data: DataModel
     
     //screensize width = 393
     //screensize height = 852
@@ -42,39 +42,41 @@ struct ConstellationView: View {
                     .opacity(visible ? 1 : 0)
                     .animation(.easeInOut(duration: 4.0), value: visible)
                 
-                // MARK: ANTA
-                HStack{
-                    NavigationLink(destination: CameraView()){
-                        StarView(card: dataModel.cardsList[currentIndex],
-                                 isActive: true)
+                VStack{
+                    // MARK: ANTA
+                    HStack{
+                        NavigationLink(destination: CameraView().environmentObject(dataModel)){
+                            StarView(card: dataModel.cardsList[currentIndex],
+                                     isActive: true)
+                            
+                        }
+                        Spacer()
                     }
-                    Spacer()
+                    
+                    // MARK: CONSTELLATION 02
+                    HStack{
+                        Spacer()
+                        StarView(card: dataModel.cardsList[currentIndex + 1],
+                                 isActive: false)
+                    }
+                    .offset(x: 0, y: -20)
+                    
+                    // MARK: CONSTELLATION 03
+                    HStack{
+                        StarView(card: dataModel.cardsList[currentIndex + 2],
+                                 isActive: false)
+                        Spacer()
+                    }
+                    .offset(x: 0, y: -40)
+                    
+                    // MARK: CONSTELLATION 04
+                    HStack{
+                        Spacer()
+                        StarView(card: dataModel.cardsList[currentIndex + 3],
+                                 isActive: false)
+                    }
+                    .offset(x: 0, y: -60)
                 }
-                
-                // MARK: CONSTELLATION 02
-                HStack{
-                    Spacer()
-                    StarView(card: dataModel.cardsList[currentIndex + 1],
-                             isActive: false)
-                }
-                .offset(x: 0, y: -20)
-                
-                // MARK: CONSTELLATION 03
-                HStack{
-                    StarView(card: dataModel.cardsList[currentIndex + 2],
-                             isActive: false)
-                    Spacer()
-                }
-                .offset(x: 0, y: -40)
-                
-                // MARK: CONSTELLATION 04
-                HStack{
-                    Spacer()
-                    StarView(card: dataModel.cardsList[currentIndex + 3],
-                             isActive: false)
-                }
-                .offset(x: 0, y: -60)
-                
             }
             .padding(.horizontal, 34)
         }

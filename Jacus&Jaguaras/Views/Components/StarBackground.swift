@@ -1,6 +1,6 @@
 import CoreMotion
 import SwiftUI
-internal import Combine
+import Combine
 
 class MotionManager: ObservableObject {
     private var manager = CMMotionManager()
