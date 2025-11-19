@@ -10,7 +10,7 @@ import SwiftUI
 struct EndingView: View {
     
     let card: CardModel
-    
+    @EnvironmentObject var dataModel: DataModel
     var imageName: String = ""
     
     var body: some View {
@@ -35,7 +35,9 @@ struct EndingView: View {
                     .frame(maxWidth: 267, maxHeight: 169)
                     .multilineTextAlignment(.leading)
                 
-                NavigationLink(destination: ConstellationView()){
+                NavigationLink(destination: ConstellationView(card: dataModel.cardsList[0])
+                    .environmentObject(dataModel)
+                ){
                     Text("Voltar a tela inicial")
                         .foregroundStyle(.white)
                         .font(.system(size: 16, weight: .semibold))
@@ -44,6 +46,9 @@ struct EndingView: View {
                         .background(.gray.opacity(0.4))
                         .cornerRadius(18)
                 }
+                .simultaneousGesture(TapGesture().onEnded {
+                                    dataModel.unlockNext(currentCard: card)
+                                })
             }
             .padding(.horizontal, 32)
             .frame(width: 393)

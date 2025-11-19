@@ -24,6 +24,7 @@ struct StarView: View {
     let card: CardModel
     
     var isActive: Bool
+    @State private var dashRotationAngle: Double = 0
     
     var body: some View {
         
@@ -36,6 +37,15 @@ struct StarView: View {
                             style: StrokeStyle(lineWidth: 2,
                                                dash: [10, 20]))
                     .frame(width: 163, height: 163)
+                    .rotationEffect(.degrees(dashRotationAngle))
+                    .onAppear {
+                        withAnimation(
+                            Animation.linear(duration: 10)
+                                .repeatForever(autoreverses: false)
+                        ) {
+                            dashRotationAngle = 360
+                        }
+                    }
                 
                 Circle()
                     .fill(card.colorCircle)
