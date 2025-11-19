@@ -11,6 +11,7 @@ import SwiftUI
 struct StartView: View {
     let screenSize = UIScreen.main.bounds
     @State private var showButton = false
+    @StateObject var dataModel = DataModel()
     //screensize width = 393
     //screensize height = 852
     //aspectratio
@@ -40,17 +41,9 @@ struct StartView: View {
                     .frame(height: screenSize.height * 0.1)
                 
                 if showButton{
-                    NavigationLink(destination: ConstellationView(card: CardModel(
-                        imageName: "star03",
-                        icon: "lock.fill",
-                        title: "Homem Velho",
-                        text: "A constelação do Homem Velho retrata o sábio ancestral que observa o céu, lembrando os povos de honrar o tempo, a memória e o ciclo da vida.",
-                        isActive: false,
-                        colorStroke: .primary600,
-                        colorCircle: .primary400,
-                        colorIcon: .primary600
-                    ))){
+                    NavigationLink(destination: ConstellationView(card: dataModel.cardsList[0])){
                         ButtonView(primaryColor: .secondary200, secondaryColor: .secondary400, cornerRadius: 16)
+                            .environmentObject(dataModel)
                             .frame(width: screenSize.width * 0.7, height: screenSize.height * 0.06)
                             .overlay{
                                 HStack{                            Text("COMEÇAR AGORA")
