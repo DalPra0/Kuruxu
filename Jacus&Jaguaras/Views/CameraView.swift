@@ -14,7 +14,7 @@ struct CameraView: View {
     var body: some View {
        ZStack{
            ARTestView()
-           NavigationLink(destination: EndingView(card: dataModel.cardsList[0]).environmentObject(data)){
+           NavigationLink(destination: FinalView(card: dataModel.cardsList[0]).environmentObject(data)){
                Text("OK")
                    .font(.title)
                    .foregroundStyle(.white)

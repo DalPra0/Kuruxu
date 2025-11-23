@@ -12,7 +12,7 @@ import Combine
 class DataModel: ObservableObject {
     @Published var cardsList: [CardModel] = [
         CardModel(
-            imageName: "star01",
+            imageName: "antaConstelacao",
             icon: "anta",
             title: "Anta do Norte",
             text: "A constelação da Anta do Norte representa o espírito guardião das águas, que guia os rios e protege as florestas sob o brilho da Via Láctea.",
