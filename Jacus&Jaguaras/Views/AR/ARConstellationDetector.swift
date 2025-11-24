@@ -9,28 +9,30 @@ struct ConstellationPattern {
     static let tenPointConstellation = ConstellationPattern(
         name: "Constelação de 10 Pontos",
         cardMapping: [
-            "settlement": 0,
-            "Gosmanuladora": 1,
-            "ilha": 2,
-            "mimico": 3,
-            "dogmeat": 4,
-            "aya-of-alexandria": 5,
-            "diabolic-tutor": 6,
-            "copy": 7,
-            "soldier": 8,
-            "elefante": 9
+            "Carta 1": 0,
+            "Carta 2": 1,
+            "Carta 3": 2,
+            "Carta 4": 3,
+            "Carta 5": 4,
+            "Carta 6": 5,
+            "Carta 7": 6,
+            "Carta 8": 7,
+            "Carta 9": 8,
+            "Carta 10": 9
         ],
         connections: [
             (0, 1),
-            (0, 2),
+            (0, 9),
+            (1, 2),
             (2, 3),
+            (2, 4),
             (3, 4),
             (4, 5),
-            (1, 5),
-            (4, 6),
-            (4, 7),
             (5, 8),
-            (5, 9)
+            (5, 9),
+            (6, 7),
+            (7, 8),
+            (8, 9)
         ]
     )
 }

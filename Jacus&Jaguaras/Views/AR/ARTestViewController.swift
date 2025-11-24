@@ -127,7 +127,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         DispatchQueue.main.async {
             self.feedbackManager.cardDetected()
             self.lineRenderer.addMarker(for: cardName, at: position, in: self.sceneView)
-            self.updateUI()
+//            self.updateUI()
             self.modelManager.add3DModel(to: node, cardName: cardName)
             self.constellationDetector.checkForConstellation(detectedCards: self.detectedCards)
             
@@ -146,17 +146,17 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         
         DispatchQueue.main.async {
             self.feedbackManager.cardRemoved()
-            self.updateUI()
+//            self.updateUI()
             self.constellationDetector.checkForConstellation(detectedCards: self.detectedCards)
         }
     }
     
-    private func updateUI() {
-        let count = detectedCards.count
-        let total = sessionManager.totalCardsAvailable
-        
-//        uiManager.updateCounter(count: count, total: total)
-    }
+//    private func updateUI() {
+//        let count = detectedCards.count
+//        let total = sessionManager.totalCardsAvailable
+//        
+////        uiManager.updateCounter(count: count, total: total)
+//    }
     
     private func showAlert(message: String) {
         let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
