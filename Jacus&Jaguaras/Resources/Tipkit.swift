@@ -10,25 +10,17 @@ import TipKit
 
 struct tip1: Tip {
     
-    static let readCardEvent = Event(id: "readCard")
-    
     var title: Text {
         Text("Marque uma estrela")
     }
     
     var message: Text? {
-        Text("Aponte a câmera para ler a primeira carta da constelação e marcar a estrela.")
+        Text("Aponte a câmera para uma carta e leia a primeira estrela da constelação. É imporante que o lado com o mosaico esteja para cima.")
             .foregroundStyle(.purple400)
     }
     
     var image: Image? {
         Image(systemName: "camera.fill")
-    }
-    
-    var rules: [Rule] {
-        #Rule(Self.readCardEvent) { event in
-            event.donations.count == 0
-        }
     }
 }
 
@@ -38,7 +30,7 @@ struct tip2: Tip {
     }
     
     var message: Text? {
-        Text("Posicione todas as cartas e tente completar até a constelação aparecer.")
+        Text("Complete com o restante das cartas até a constelação aparecer, posicionando corretamente de acordo com a numeração da estrela.")
             .foregroundStyle(.purple400)
     }
     
@@ -50,8 +42,13 @@ struct tip2: Tip {
         Action(id: "finalizar") {
             invalidate(reason: .tipClosed)
         } _: {
-            Text("Vamos Lá!")
-                .foregroundStyle(.secondary200)
+            if #available(iOS 26, *) {
+                Text("Vamos Lá!")
+                    .foregroundStyle(.primary900)
+            } else {
+                Text("Vamos Lá!")
+                    .foregroundStyle(.secondary200)
+            }
         }
     }
 }

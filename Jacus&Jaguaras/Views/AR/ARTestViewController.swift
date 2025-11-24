@@ -131,7 +131,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
             self.modelManager.add3DModel(to: node, cardName: cardName)
             self.constellationDetector.checkForConstellation(detectedCards: self.detectedCards)
             
-            Task{await tip1.readCardEvent.donate()}
+            Task{tip1().invalidate(reason: .tipClosed)}
         }
     }
     
