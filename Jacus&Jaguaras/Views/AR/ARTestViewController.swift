@@ -209,10 +209,10 @@ final class SavedPhotosManager {
         
         do {
             try data.write(to: fileURL)
-            print("📸 Foto salva: \(fileName)")
+            print("Foto salva: \(fileName)")
             print("   Local: \(fileURL.path)")
         } catch {
-            print("❌ Erro ao salvar foto: \(error)")
+            print("Erro ao salvar foto: \(error)")
         }
     }
 }

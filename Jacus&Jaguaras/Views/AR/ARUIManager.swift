@@ -22,18 +22,6 @@ class ARUIManager {
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         view.addSubview(closeButton)
         
-        counterLabel = UILabel()
-        counterLabel.text = "Cartas: 0"
-        counterLabel.textColor = .white
-        counterLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        counterLabel.textAlignment = .center
-        counterLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        counterLabel.layer.cornerRadius = 15
-        counterLabel.clipsToBounds = true
-        counterLabel.frame = CGRect(x: 20, y: 50, width: 200, height: 50)
-        counterLabel.autoresizingMask = [.flexibleRightMargin, .flexibleBottomMargin]
-        view.addSubview(counterLabel)
-        
         triangleLabel = UILabel()
         triangleLabel.text = ""
         triangleLabel.textColor = .white
