@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 @main
 struct Jacus_JaguarasApp: App {
@@ -6,6 +7,13 @@ struct Jacus_JaguarasApp: App {
         WindowGroup {
             ContentView()
                 .ignoresSafeArea()
+                .task {
+                    try? Tips.resetDatastore() // MARK: só pra teste
+                    try? Tips.configure([
+                        //.displayFrequency(.immediate),
+                        .datastoreLocation(.applicationDefault)
+                    ])
+                }
         }
     }
 }
