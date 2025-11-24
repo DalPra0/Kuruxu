@@ -1,6 +1,7 @@
 import UIKit
 import ARKit
 import SceneKit
+import TipKit
 
 class ARTestViewController: UIViewController, ARSCNViewDelegate {
     
@@ -113,6 +114,8 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         print("[\(cardName)] DETECTADA!")
         print("   Posição: (\(String(format: "%.2f", position.x)), \(String(format: "%.2f", position.y)), \(String(format: "%.2f", position.z)))")
         print("   Total: \(detectedCards.count)/\(sessionManager.totalCardsAvailable)")
+        
+        Task{await tip1.readCardEvent.donate()}
         
         DispatchQueue.main.async {
             self.feedbackManager.cardDetected()
