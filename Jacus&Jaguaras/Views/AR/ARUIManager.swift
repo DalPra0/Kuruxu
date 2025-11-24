@@ -22,6 +22,8 @@ class ARUIManager {
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         view.addSubview(closeButton)
         
+        
+        
         triangleLabel = UILabel()
         triangleLabel.text = ""
         triangleLabel.textColor = .white

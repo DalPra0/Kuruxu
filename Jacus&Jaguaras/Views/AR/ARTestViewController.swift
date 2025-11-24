@@ -15,6 +15,8 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     private let feedbackManager = ARFeedbackManager()
     private let uiManager = ARUIManager()
     
+    var onDismiss: (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupARScene()
@@ -34,20 +36,25 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     }
     
     private func setupARScene() {
-        view.addSubview(sceneView)
         sceneView.frame = view.bounds
         sceneView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.insertSubview(sceneView, at: 0)
         
         sceneView.delegate = self
         sceneView.autoenablesDefaultLighting = true
         sceneView.automaticallyUpdatesLighting = true
         
+        view.backgroundColor = .black
+        sceneView.backgroundColor = .black
+        
         sessionManager.sceneView = sceneView
+        
+        print("🎥 ARSCNView configurada: frame=\(sceneView.frame), bounds=\(view.bounds)")
     }
     
     private func setupUI() {
         uiManager.setupUI(in: view) { [weak self] in
-            self?.dismiss(animated: true)
+            self?.onDismiss?()
         }
         
         uiManager.onPhotoTapped = { [weak self] in
@@ -115,7 +122,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         print("   Posição: (\(String(format: "%.2f", position.x)), \(String(format: "%.2f", position.y)), \(String(format: "%.2f", position.z)))")
         print("   Total: \(detectedCards.count)/\(sessionManager.totalCardsAvailable)")
         
-        Task{await tip1.readCardEvent.donate()}
+//        Task{await tip1.readCardEvent.donate()}
         
         DispatchQueue.main.async {
             self.feedbackManager.cardDetected()
@@ -123,6 +130,8 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
             self.updateUI()
             self.modelManager.add3DModel(to: node, cardName: cardName)
             self.constellationDetector.checkForConstellation(detectedCards: self.detectedCards)
+            
+            Task{await tip1.readCardEvent.donate()}
         }
     }
     
@@ -146,7 +155,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         let count = detectedCards.count
         let total = sessionManager.totalCardsAvailable
         
-        uiManager.updateCounter(count: count, total: total)
+//        uiManager.updateCounter(count: count, total: total)
     }
     
     private func showAlert(message: String) {

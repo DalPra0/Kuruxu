@@ -5,40 +5,19 @@
   },
   "resources" : [
     {
-      "filename" : "aya-of-alexandria.arreferenceimage"
+      "filename" : "Carta 1.arreferenceimage"
     },
     {
-      "filename" : "Carta 7.arreferenceimage"
+      "filename" : "Carta 2-1.arreferenceimage"
     },
     {
-      "filename" : "copy.arreferenceimage"
+      "filename" : "Carta 2.arreferenceimage"
     },
     {
-      "filename" : "diabolic-tutor.arreferenceimage"
+      "filename" : "Carta 3.arreferenceimage"
     },
     {
-      "filename" : "dogmeat.arreferenceimage"
-    },
-    {
-      "filename" : "elefante.arreferenceimage"
-    },
-    {
-      "filename" : "Gosmanuladora.arreferenceimage"
-    },
-    {
-      "filename" : "humano.arreferenceimage"
-    },
-    {
-      "filename" : "ilha.arreferenceimage"
-    },
-    {
-      "filename" : "mimico.arreferenceimage"
-    },
-    {
-      "filename" : "Prancheta 1.arreferenceimage"
-    },
-    {
-      "filename" : "Prancheta 3.arreferenceimage"
+      "filename" : "Prancheta 2.arreferenceimage"
     },
     {
       "filename" : "Prancheta 4.arreferenceimage"
@@ -47,22 +26,13 @@
       "filename" : "Prancheta 5.arreferenceimage"
     },
     {
+      "filename" : "Prancheta 6.arreferenceimage"
+    },
+    {
       "filename" : "Prancheta 7.arreferenceimage"
     },
     {
-      "filename" : "Prancheta 9.arreferenceimage"
-    },
-    {
-      "filename" : "Prancheta 10.arreferenceimage"
-    },
-    {
-      "filename" : "Prancheta 11.arreferenceimage"
-    },
-    {
-      "filename" : "settlement.arreferenceimage"
-    },
-    {
-      "filename" : "soldier.arreferenceimage"
+      "filename" : "Prancheta 8.arreferenceimage"
     }
   ]
 }

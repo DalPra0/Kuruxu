@@ -1,9 +1,14 @@
 import SwiftUI
 
 struct ARTestView: UIViewControllerRepresentable {
+    @Environment(\.dismiss) var dismiss
     
     func makeUIViewController(context: Context) -> ARTestViewController {
-        return ARTestViewController()
+        let controller = ARTestViewController()
+        controller.onDismiss = {
+            dismiss()
+        }
+        return controller
     }
     
     func updateUIViewController(_ uiViewController: ARTestViewController, context: Context) {
