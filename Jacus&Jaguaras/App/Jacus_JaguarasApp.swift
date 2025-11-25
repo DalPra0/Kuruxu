@@ -8,7 +8,7 @@ struct Jacus_JaguarasApp: App {
             ContentView()
                 .ignoresSafeArea()
                 .task {
-                    try? Tips.resetDatastore() // MARK: só pra teste
+                    //try? Tips.resetDatastore() // MARK: só pra teste
                     try? Tips.configure([
                         //.displayFrequency(.immediate),
                         .datastoreLocation(.applicationDefault)
