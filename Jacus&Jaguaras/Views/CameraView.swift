@@ -11,6 +11,7 @@ import TipKit
 struct CameraView: View {
     @EnvironmentObject var data: DataModel
     let dataModel = DataModel()
+    @State private var navigateToFinal = false
     
     @State var tips = TipGroup(.ordered) {
         tip1()
@@ -19,11 +20,17 @@ struct CameraView: View {
     
     var body: some View {
         ZStack(alignment: .top){
-           ARTestView()
+           ARTestView(onPhotoTaken: {
+               navigateToFinal = true
+           })
            TipView(tips.currentTip)
                 .padding()
                 .tipBackground(.primary900)
                 .tint(.white)
+       }
+       .navigationDestination(isPresented: $navigateToFinal) {
+           FinalView(card: dataModel.cardsList[0])
+               .environmentObject(dataModel)
        }
        .navigationBarBackButtonHidden(true)
     }

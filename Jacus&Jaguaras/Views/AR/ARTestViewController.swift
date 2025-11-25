@@ -16,6 +16,7 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
     private let uiManager = ARUIManager()
     
     var onDismiss: (() -> Void)?
+    var onPhotoTaken: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -171,7 +172,9 @@ class ARTestViewController: UIViewController, ARSCNViewDelegate {
         feedbackManager.markerCreated()
         
         let alert = UIAlertController(title: "📸 Foto Salva!", message: "A constelação foi capturada!", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            self?.onPhotoTaken?()
+        })
         present(alert, animated: true)
     }
 }
