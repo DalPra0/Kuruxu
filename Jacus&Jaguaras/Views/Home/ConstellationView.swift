@@ -13,6 +13,7 @@ struct ConstellationView: View {
     let card: CardModel
     @State var currentIndex = 0
     @State private var visible = false
+    @State private var showPopup = false
     @EnvironmentObject var data: DataModel
     
     //screensize width = 393
@@ -40,15 +41,17 @@ struct ConstellationView: View {
                     }
                     .padding(.bottom, 48)
                     .opacity(visible ? 1 : 0)
-                    .animation(.easeInOut(duration: 4.0), value: visible)
+                    .animation(.easeInOut(duration: 2.0), value: visible)
                 
                 VStack{
                     // MARK: ANTA
                     HStack{
-                        NavigationLink(destination: CameraView().environmentObject(dataModel)){
+                        Button{
+                            //showPopup.toggle()
+                            showPopup = true
+                        }label:{
                             StarView(card: dataModel.cardsList[currentIndex],
                                      isActive: true)
-                            
                         }
                         Spacer()
                     }
@@ -79,6 +82,20 @@ struct ConstellationView: View {
                 }
             }
             .padding(.horizontal, 34)
+            
+            ConstellationPopUp(card: dataModel.cardsList[currentIndex])
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                //.background(.black.opacity(0.3))
+                .background{
+                    Rectangle()
+                        .fill(.black.opacity(0.4))
+                        .onTapGesture {
+                            if showPopup {showPopup = false}
+                        }
+                }
+                .opacity(showPopup ? 1 : 0)
+                .animation(.easeInOut(duration: 0.3), value: showPopup)
+                .offset(y: -abs(screenSize.height * 0.07))
         }
         .onAppear {
             DispatchQueue.main.async {
@@ -94,7 +111,6 @@ struct ConstellationView: View {
                 center: UnitPoint(x: 0.53, y: 0.5)
             )
         )
-        
         .navigationBarBackButtonHidden(true)
         
     }
