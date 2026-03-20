@@ -39,7 +39,9 @@ struct StarBackground: View {
             }
         }
         .ignoresSafeArea()
-        .onAppear {
+        .task {
+            try? await Task.sleep(nanoseconds: 100_000_000)
+            
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                 index = (index + 1) % images.count
             }
