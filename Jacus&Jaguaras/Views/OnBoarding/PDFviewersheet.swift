@@ -26,6 +26,17 @@ struct PDFViewer: UIViewRepresentable {
 struct PDFViewerSheet: View {
     @Environment(\.dismiss) private var dismiss
 
+    private func printPDF() {
+        guard let url = Bundle.main.url(forResource: "cartas", withExtension: "pdf") else { return }
+        let printController = UIPrintInteractionController.shared
+        let printInfo = UIPrintInfo.printInfo()
+        printInfo.outputType = .general
+        printInfo.jobName = "Cartas"
+        printController.printInfo = printInfo
+        printController.printingItem = url
+        printController.present(animated: true)
+    }
+
     var body: some View {
         NavigationStack {
             Group {
@@ -43,9 +54,16 @@ struct PDFViewerSheet: View {
             .navigationTitle("Cartas para Imprimir")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button("Fechar") { dismiss() }
                         .foregroundColor(.secondary400)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        printPDF()
+                    } label: {
+                        Label("Imprimir", systemImage: "printer")
+                    }
                 }
             }
         }

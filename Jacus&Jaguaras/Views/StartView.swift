@@ -13,6 +13,7 @@ struct StartView: View {
     @State private var showButton = false
     @State private var navigateToConstellation = false
     @State private var showPermissionAlert = false
+    @State private var showPDFSheet = false
     @StateObject var dataModel = DataModel()
     //screensize width = 393
     //screensize height = 852
@@ -60,6 +61,18 @@ struct StartView: View {
                                     .foregroundStyle(.neutral800)
                                 }
                         }
+
+                        Button(action: {
+                            showPDFSheet = true
+                        }) {
+                            HStack {
+                                Image(systemName: "printer")
+                                Text("IMPRIMIR CARTAS")
+                            }
+                            .font(.system(size: 13))
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.secondary200)
+                        }
                     }
                     
                     
@@ -78,6 +91,9 @@ struct StartView: View {
                 center: UnitPoint(x: 0.53, y: 0.5)
             )
         )
+        .sheet(isPresented: $showPDFSheet) {
+            PDFViewerSheet()
+        }
         .alert("Permissão de Câmera Necessária", isPresented: $showPermissionAlert) {
             Button("Abrir Configurações") {
                 if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
